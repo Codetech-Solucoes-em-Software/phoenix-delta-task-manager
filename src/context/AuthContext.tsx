@@ -2,12 +2,12 @@ import { ReactNode, createContext, useContext, useState } from "react";
 import { UserRole } from "../enums/UserRole";
 
 type User = {
-  id: number;
-  name: string;
-  degree: string;
+  // id: string;
+  // name: string;
+  // degree: string;
   email: string;
   password: string;
-  role: UserRole;
+  role: string;
 }
 
 type AuthContextType = {
