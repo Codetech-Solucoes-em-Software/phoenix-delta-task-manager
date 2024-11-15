@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useNavigate } from "react-router-dom";
-import { User, useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
 import { userExists, createUser, getUser } from "../../services/UserService";
 import { generateRefreshToken, generateToken } from "../../services/AuthService";
@@ -13,7 +13,7 @@ export default function Register() {
   const [degree, setDegree] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState<'admin' | 'user'>('user');
+  const role = 'admin';
   const [lodge, setLodge] = useState<'phoenix' | 'delta'>('phoenix');
   const [error, setError] = useState('');
 
