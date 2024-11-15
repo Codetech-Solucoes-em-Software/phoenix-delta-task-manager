@@ -1,24 +1,48 @@
 /* eslint-disable import/no-anonymous-default-export */
-const getTasks = () => JSON.parse(localStorage.getItem('tasks') || '[]');
+import { Task } from "../models/Task";
 
-const createTask = (task: any) => {
-  const tasks = getTasks();
-  localStorage.setItem('tasks', JSON.stringify([...tasks, task]));
+const getAllTasks = (): Task[] => {
+  const tasks = localStorage.getItem('tasks');
+  return tasks ? JSON.parse(tasks) : [];
 };
 
-const updateTask = (taskId: string, updateTask: any) => {
-  const tasks = getTasks().map((task: any) => (task.id === taskId ? updateTask : task));
+const saveTasks = (tasks: Task[]) => {
   localStorage.setItem('tasks', JSON.stringify(tasks));
 };
 
-const deleteTask = (taskId: string) => {
-  const tasks = getTasks().filter((task: any) => task.id !== taskId);
-  localStorage.setItem('tasks', JSON.stringify(tasks)); 
+const createTask = (task: Task) => {
+  const tasks = getAllTasks();
+  tasks.push(task);
+  saveTasks(tasks);
+};
+
+const updateTask = (updatedTask: Task) => {
+  const tasks = getAllTasks();
+  const index = tasks.findIndex(task => task.id === updatedTask.id);
+  if (index !== -1) {
+    tasks[index] = updatedTask;
+    saveTasks(tasks);
+  }
+};
+
+const deleteTask = (taskId: number) => {
+  const tasks = getAllTasks().filter(task => task.id !== taskId);
+  saveTasks(tasks);
+};
+
+const completeTask = (taskId: number) => {
+  const tasks = getAllTasks();
+  const index = tasks.findIndex(task => task.id === taskId);
+  if (index !== -1) {
+    tasks[index].isCompleted = true;
+    saveTasks(tasks);
+  }
 };
 
 export {
-  getTasks,
+  getAllTasks,
   createTask,
   updateTask,
-  deleteTask
+  deleteTask,
+  completeTask
 }
