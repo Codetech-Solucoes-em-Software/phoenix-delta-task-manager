@@ -1,4 +1,4 @@
-import { User } from "../context/AuthContext";
+import { User } from "../models/User";
 
 // Função para obter todos os usuários do localStorage
 const getAllUsers = (): User[] => {

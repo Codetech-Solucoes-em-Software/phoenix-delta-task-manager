@@ -1,4 +1,4 @@
-import { User } from "../context/AuthContext";
+import { User } from '../models/User';
 
 const TOKEN_EXPIRATION_TIME = 60 * 60 * 1000; // 1 hora em milissegundos
 
