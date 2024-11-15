@@ -1,13 +1,16 @@
 import { ReactNode, createContext, useContext, useState } from "react";
 import { UserRole } from "../enums/UserRole";
 
-type User = {
-  // id: string;
-  // name: string;
-  // degree: string;
-  email: string;
-  password: string;
-  role: string;
+export type User = {
+  id?: string;
+  name?: string;
+  degree?: string;
+  lodge?: string;
+  email?: string;
+  password?: string;
+  role?: string;
+  token?: string;
+  refreshToken?: string;
 }
 
 type AuthContextType = {
@@ -21,7 +24,10 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
-  const login = (userData: User) => setUser(userData);
+  const login = (userData: User) => { 
+    setUser(userData);
+    window.alert('Login realizado com sucesso'); 
+  };
   const logout = () => setUser(null);
 
   return (
