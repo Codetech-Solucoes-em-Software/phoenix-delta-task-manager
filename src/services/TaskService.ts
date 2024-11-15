@@ -16,6 +16,9 @@ const deleteTask = (taskId: string) => {
   localStorage.setItem('tasks', JSON.stringify(tasks)); 
 };
 
-export default {
-  getTasks
+export {
+  getTasks,
+  createTask,
+  updateTask,
+  deleteTask
 }
