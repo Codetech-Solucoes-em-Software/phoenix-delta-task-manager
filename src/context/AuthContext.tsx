@@ -1,23 +1,7 @@
 import { ReactNode, createContext, useContext, useState } from "react";
 import { UserRole } from "../enums/UserRole";
-
-export type User = {
-  id?: string;
-  name?: string;
-  degree?: string;
-  lodge?: string;
-  email?: string;
-  password?: string;
-  role?: string;
-  token?: string;
-  refreshToken?: string;
-}
-
-type AuthContextType = {
-  user: User | null;
-  login: (userData: User) => void;
-  logout: () => void;
-}
+import { User } from "../models/User";
+import { AuthContextType } from "../models/AuthContextType";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
