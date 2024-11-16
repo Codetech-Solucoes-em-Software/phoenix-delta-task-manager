@@ -4,8 +4,10 @@ import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
 import { userExists, createUser, getUser } from "../../services/UserService";
 import { generateRefreshToken, generateToken } from "../../services/AuthService";
+import useDocumentTitle from "../../hooks/PageTitle";
 
 export default function Register() {
+  useDocumentTitle('Register');
   const navigate = useNavigate();
   const { login } = useAuth();
   
