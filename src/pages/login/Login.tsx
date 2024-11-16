@@ -3,8 +3,10 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 // import { getUser } from "../../services/UserService";
 import { authenticateUser } from "../../services/AuthService";
+import useDocumentTitle from "../../hooks/PageTitle";
 
 export default function Login() {
+  useDocumentTitle('Login');
   const navigate = useNavigate();
   const { login } = useAuth();
   const [email, setEmail] = useState('');
