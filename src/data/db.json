@@ -1,0 +1,38 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "name": "Root",
+      "degree": "33",
+      "lodge": "phoenix",
+      "email": "root@admin.com",
+      "password": "1234",
+      "role": "admin",
+      "token": "root@admin.com-z1mruhru6",
+      "refreshToken": ""
+    },
+    {
+      "id": "2",
+      "name": "User",
+      "degree": "10",
+      "lodge": "phoenix",
+      "email": "user@user.com",
+      "password": "123456",
+      "role": "user",
+      "token": "",
+      "refreshToken": ""
+    },
+    {
+      "id": "16",
+      "name": "Teste",
+      "degree": "33",
+      "lodge": "phoenix",
+      "email": "teste@teste.com",
+      "password": "123456",
+      "role": "admin",
+      "token": "teste@teste.com-1kt85y6gw",
+      "refreshToken": "teste@teste.com-refresh-m6cw7017q"
+    }
+  ],
+  "tasks": []
+}
