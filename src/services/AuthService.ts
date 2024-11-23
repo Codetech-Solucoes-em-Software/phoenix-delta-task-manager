@@ -3,6 +3,7 @@ import { User } from '../models/User';
 import { getAllUsers } from './UserService';
 import { getUserByEmail, updateUser } from './UserService';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const TOKEN_EXPIRATION_TIME = 60 * 60 * 1000;
 
 const generateToken = (email: string): string => {
