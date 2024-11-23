@@ -1,82 +1,68 @@
 import { User } from "../models/User";
 
-// Função para obter todos os usuários do localStorage
-const getAllUsers = (): User[] => {
-  return JSON.parse(localStorage.getItem('users') || '[]');
+const API_URL = 'http://localhost:5000/users';
+
+// Função para obter todos os usuários
+const getAllUsers = async (): Promise<User[]> => {
+  const response = await fetch(API_URL);
+  return await response.json();
 };
 
-const getUserByEmail = (email: string): User | undefined => {
-  const users = getAllUsers();
-  return users.find(user => user.email === email);
+// Função para obter um usuário pelo email
+const getUserByEmail = async (email: string): Promise<User> => {
+  if (!email) throw new Error('Usuário não existente');
+  const response = await fetch(`${API_URL}?email=${email}`);
+  const users = await response.json();
+  return users[0];
 };
 
-// Função para salvar a lista de usuários no localStorage
-const saveAllUsers = (users: User[]) => {
-  localStorage.setItem('users', JSON.stringify(users));
-};
+const createUser = async (user: User) => {
+  const response = await fetch("http://localhost:5000/users", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  });
 
-// Função para criar um novo usuário
-const createUser = (user: User): boolean => {
-  const users = getAllUsers();
-  if (users.some((u) => u.email === user.email)) {
-    return false; // Usuário já existe
-  }
-  users.push(user);
-  saveAllUsers(users);
-  return true;
-};
-
-// Função para obter um usuário pelo nome
-const getUser = (username: string): User | undefined => {
-  const users = getAllUsers();
-  return users.find((user) => user.email === username);
+  const newUser = await response.json();
+  return newUser;
 };
 
 // Função para atualizar um usuário existente
-const updateUser = (updatedUser: User): boolean => {
-  const users = getAllUsers();
-  const index = users.findIndex((u) => u.email === updatedUser.email);
-  if (index === -1) return false;
-  users[index] = updatedUser;
-  saveAllUsers(users);
-  return true;
+const updateUser = async (updatedUser: User): Promise<boolean> => {
+  const response = await fetch(`${API_URL}/${updatedUser.id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updatedUser),
+  });
+
+  return response.ok;
 };
 
 // Função para deletar um usuário
-const deleteUser = (username: string): boolean => {
-  const users = getAllUsers();
-  const updatedUsers = users.filter((user) => user.email !== username);
-  if (updatedUsers.length === users.length) return false;
-  saveAllUsers(updatedUsers);
-  return true;
+const deleteUser = async (userId: number): Promise<boolean> => {
+  const response = await fetch(`${API_URL}/${userId}`, {
+    method: 'DELETE',
+  });
+
+  return response.ok;
 };
 
-// Função para verificar se um usuário já existe
-const userExists = (username: string): boolean => {
-  return !!getUser(username);
+const userExists = async (email: string): Promise<boolean> => {
+  const users = await getAllUsers();
+  return users.some(user => user.email === email);
 };
 
-const getLoggedInUser = (): User | null => {
-  const userData = localStorage.getItem('loggedInUser');
+const getLoggedInUser = () => {};
 
-  if (!userData) return null;
-
-  try {
-    return JSON.parse(userData);
-  } catch (error) {
-    console.error('Erro ao parsear o usuário logado:', error);
-    return null;
-  }
-};
 
 export {
-  getUser,
   getAllUsers,
+  getUserByEmail,
   createUser,
   updateUser,
   deleteUser,
-  userExists,
-  saveAllUsers,
-  getUserByEmail,
-  getLoggedInUser
-}
+  getLoggedInUser,
+  userExists
+};

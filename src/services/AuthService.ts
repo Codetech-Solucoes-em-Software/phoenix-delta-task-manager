@@ -1,8 +1,10 @@
+/* eslint-disable import/no-anonymous-default-export */
 import { User } from '../models/User';
+import { getAllUsers } from './UserService';
+import { getUserByEmail, updateUser } from './UserService';
 
-const TOKEN_EXPIRATION_TIME = 60 * 60 * 1000; // 1 hora em milissegundos
+const TOKEN_EXPIRATION_TIME = 60 * 60 * 1000;
 
-// Função para gerar um token (simples, para testes)
 const generateToken = (email: string): string => {
   return `${email}-${Math.random().toString(36).substr(2, 9)}`;
 };
@@ -11,48 +13,45 @@ const generateRefreshToken = (email: string): string => {
   return `${email}-refresh-${Math.random().toString(36).substr(2, 9)}`;
 };
 
-const authenticateUser = (email: string, password: string): User | null => {
-  const users = JSON.parse(localStorage.getItem('users') || '[]');
-  const user = users.find((u: User) => u.email === email && u.password === password);
-  
-  if (!user) return null;
+const authenticateUser = async (email: string, password: string): Promise<User | null> => {
+  if (!email) return null;
+  const user = await getUserByEmail(email);
 
-  // Gerar novos tokens
+  if (!user || user.password !== password) return null;
+
   const token = generateToken(email);
   const refreshToken = generateRefreshToken(email);
 
-  // Atualizar o usuário com os novos tokens
-  user.token = token;
-  user.refreshToken = refreshToken;
-  localStorage.setItem('users', JSON.stringify(users));
-  
-  return user;
+  const updatedUser = { ...user, token, refreshToken };
+  await updateUser(updatedUser);
+
+  return updatedUser;
 };
 
-// Função para validar o token
-const validateToken = (token: string): boolean | string => {
-  return token && token.includes('-');
+const validateToken = async (token: string): Promise<boolean> => {
+  const users = await getAllUsers();
+  return users.some((user) => user.token === token);
 };
 
-// Função para renovar o token usando o refresh token
-const refreshToken = (refreshToken: string): string | null => {
-  const users = JSON.parse(localStorage.getItem('users') || '[]');
-  const user = users.find((u: User) => u.refreshToken === refreshToken);
+const refreshToken = async (refreshToken: string): Promise<string> => {
+  const users = await getAllUsers();  
+  const user = users.find((u) => u.refreshToken === refreshToken);
 
-  if (!user) return null;
+  if (!user || !user.email) {
+    throw new Error('Não encontrou o usuário');
+  }
 
-  const newToken = generateToken(user.username);
+  const newToken = generateToken(user.email);
   user.token = newToken;
-  localStorage.setItem('users', JSON.stringify(users));
 
+  await updateUser(user);
   return newToken;
 };
 
-
 export {
-  generateRefreshToken,
-  generateToken,
-  authenticateUser,
+  refreshToken,
   validateToken,
-  refreshToken
-};
+  authenticateUser,
+  generateRefreshToken,
+  generateToken
+}
