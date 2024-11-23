@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-restricted-globals */
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
