@@ -76,10 +76,6 @@ export default function Login() {
           <div>
             <input type="password" name="" placeholder="Type your password" onChange={(e) => setPassword(e.target.value)} style={styles.input}/>
           </div>
-          <select name="" id="" style={styles.input}>
-            <option value="Phoenix">Phoenix</option>
-            <option value="Delta">Delta Phoenix</option>
-          </select>
           <button style={styles.button} type="submit" onClick={handleLogin}>Login</button>
         </form>
       </div>

@@ -8,7 +8,7 @@
       "email": "root@admin.com",
       "password": "1234",
       "role": "admin",
-      "token": "root@admin.com-rk0hkgpok",
+      "token": "root@admin.com-05rpf1bzf",
       "refreshToken": ""
     },
     {
@@ -30,7 +30,7 @@
       "email": "teste@teste.com",
       "password": "123456",
       "role": "admin",
-      "token": "teste@teste.com-1kt85y6gw",
+      "token": "teste@teste.com-o6k1sxv1u",
       "refreshToken": "teste@teste.com-refresh-m6cw7017q"
     }
   ],
