@@ -5,7 +5,8 @@ import { useState } from "react";
 import { userExists, createUser, getUserByEmail } from "../../services/UserService";
 import { generateRefreshToken, generateToken } from "../../services/AuthService";
 import useDocumentTitle from "../../hooks/PageTitle";
-import MainLogo from '../../assets/331d4371a7b3d149e94095a89c372632.jpg';
+import masonLogo from '../../assets/331d4371a7b3d149e94095a89c372632.jpg';
+import MainLogo from '../../assets/logo-lojas-2.png';
 import { styles } from "./styles";
 
 export default function Register() {
@@ -83,32 +84,33 @@ export default function Register() {
         col-sm-5 d-flex justify-content-center
       `}>
         <form action="" style={styles.registerForm}>
+          <img style={styles.logoHeaderLogin} src={masonLogo} alt="Logo Maçonaria" />
           <h2>Registrar</h2>
           {error && <p style={{ color: 'red' }}>{error}</p>}
             <input
               type="text"
-              placeholder="Type your name"
+              placeholder="Nome Completo"
               value={name}
               onChange={(e) => setName(e.target.value)}
               style={styles.input}
             />
             <input
               type="text"
-              placeholder="Type your degree"
+              placeholder="Digite o grau"
               value={degree}
               onChange={(e) => setDegree(e.target.value)}
               style={styles.input}
             />
             <input
               type="text"
-              placeholder="Type your e-mail"
+              placeholder="Digite seu e-mail"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               style={styles.input}
             />
             <input
               type="password"
-              placeholder="Type your password"
+              placeholder="Digite sua senha"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               style={styles.input}
@@ -119,7 +121,7 @@ export default function Register() {
               <option value="phoenix">Phoenix</option>
               <option value="delta">Delta</option>
             </select>
-          <button onClick={handleRegister}>Registrar</button>
+          <button style={styles.button} onClick={handleRegister}>Registrar</button>
         </form>
       </div>
       <div className="col-sm-7">

@@ -8,7 +8,7 @@
       "email": "root@admin.com",
       "password": "1234",
       "role": "admin",
-      "token": "root@admin.com-z1mruhru6",
+      "token": "root@admin.com-rk0hkgpok",
       "refreshToken": ""
     },
     {
@@ -34,5 +34,20 @@
       "refreshToken": "teste@teste.com-refresh-m6cw7017q"
     }
   ],
-  "tasks": []
+  "tasks": [
+    {
+      "id": "998f9b77-90c0-4026-ae98-d807cc937495",
+      "title": "Tarefa 1",
+      "description": "Uma descrição qualquer ",
+      "isCompleted": false,
+      "createdAt": "2024-11-30T16:47:41.555Z"
+    },
+    {
+      "id": "8c2940bb-6b19-4b88-bbb7-c997e2d56e15",
+      "title": "Tarefa 2",
+      "description": "mais uma descrição qualquer",
+      "isCompleted": false,
+      "createdAt": "2024-11-30T16:50:38.256Z"
+    }
+  ]
 }

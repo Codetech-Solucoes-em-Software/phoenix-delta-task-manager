@@ -3,27 +3,29 @@ export const styles = {
     display: 'flex' as 'flex',
     flexDirection: 'column' as 'column',
     justifyContent: 'center' as 'center',
-    alignItems: 'center' as 'center'
+    alignItems: 'center' as 'center',
+    padding: 10
   }, 
   containerPage: {
     display: 'flex' as 'flex',
     flexDirection: 'column' as 'column',
-    width: 1000,
-    height: 110,
+    width: '90%',
+    height: 150,
     justifyContent: 'center' as 'center',
     alignItems: 'center' as 'center',
     backgroundColor: '#232323' as string,
     border: 'none' as 'none',
     borderRadius: 14,
     padding: 20,
-    gap: 6
+    gap: 6,
+    marginTop: 15
   },
   registerWindow: {
     display: 'flex' as 'flex', 
     gap: 14
   },
   input: {
-    width: 300,
+    width: 270,
     height: 30,
     paddingLeft: 8,
     border: 'none' as 'none',
@@ -42,13 +44,17 @@ export const styles = {
     marginTop: 5
   },
   listTask: {
-    width: 1000,
-    height: 170,
+    width: '90%',
+    height: 'auto' as 'auto',
+    minHeight: 150,
     backgroundColor: '#232323' as string,
     border: 'none' as 'none',
     borderRadius: 14,
     padding: 20,
-    gap: 6
+    gap: 6,
+    marginTop: 50,
+    overflow: 'auto' as 'auto',
+    maxHeight: '80%'
   },
   containerTitle: {
     display: 'flex' as 'flex',
@@ -70,7 +76,7 @@ export const styles = {
     display: 'flex' as 'flex',
     justifyContent: 'space-evenly' as 'space-evenly',
     alignItems: 'center' as 'center',
-    width: 1000,
+    width: '100%',
     height: 50,
     backgroundColor: '#323232' as string,
     border: 'none' as 'none',

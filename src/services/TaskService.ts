@@ -23,13 +23,13 @@ const updateTask = async (updatedTask: Task): Promise<void> => {
   });
 };
 
-const deleteTask = async (taskId: number): Promise<void> => {
+const deleteTask = async (taskId: string): Promise<void> => {
   await fetch(`${API_URL}/${taskId}`, {
     method: 'DELETE',
   });
 };
 
-const completeTask = async (taskId: number): Promise<void> => {
+const completeTask = async (taskId: string): Promise<void> => {
   const task = await fetch(`${API_URL}/${taskId}`).then((res) => res.json());
   task.isCompleted = true;
   await updateTask(task);
