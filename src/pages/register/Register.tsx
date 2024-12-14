@@ -63,6 +63,8 @@ export default function Register() {
       // Garante que o usuário encontrado possui um token
       if (registeredUser.token) {
         login({
+          id: registeredUser.id ? Number(registeredUser.id) : undefined,
+          name: registeredUser.name,
           email: registeredUser.email,
           role: registeredUser.role,
           token: registeredUser.token,

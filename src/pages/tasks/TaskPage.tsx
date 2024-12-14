@@ -66,31 +66,18 @@ export default function TaskPage() {
   };
   return (
     <div style={styles.container}>
-      <h2>Lista de Tarefas</h2>
       {user?.role === 'admin' && (
         <div style={styles.containerPage}>
-          <h3>Criar Tarefa</h3>
+          <h3>A sua jornada do conhecimento começa aqui</h3>
           <div style={styles.registerWindow}>
-            <input
-              type="text"
-              placeholder="Título"
-              value={newTask.title}
-              onChange={(e) => setNewTask({ ...newTask, title: e.target.value })}
-              style={styles.input}
-            />
-            <input
-              placeholder="Descrição"
-              value={newTask.description}
-              onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
-              style={styles.input}
-            />
-            <input
-              type="text"
-              placeholder="Usuário"
-              value={newTask.createdBy}
-              onChange={(e) => setNewTask({ ...newTask, createdBy: e.target.value })}
-              style={styles.input}
-            />
+            <label htmlFor="">
+              Nome:
+              {user.name}
+            </label>
+            <label htmlFor="">
+              Grau:
+              {user.degree}
+            </label>
             {/* <input
               type="date"
               value={newTask.finishedAt}
@@ -98,7 +85,6 @@ export default function TaskPage() {
               style={styles.input}
             /> */}
           </div>
-          <button onClick={handleCreateTask} style={styles.button}>Criar Tarefa</button>
         </div>
       )}
 

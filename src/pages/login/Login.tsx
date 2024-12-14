@@ -15,7 +15,7 @@ export default function Login() {
   useDocumentTitle('Login');
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const handleLogin = async (e: any) => {
@@ -49,6 +49,8 @@ export default function Login() {
 
       // Realiza o login e redireciona para a página correta
       login({
+        id: registeredUser.id ? Number(registeredUser.id) : undefined,
+        name: registeredUser.name,
         email: registeredUser.email,
         role: registeredUser.role,
         token: newToken,

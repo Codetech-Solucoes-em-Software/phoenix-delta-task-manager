@@ -1,14 +1,13 @@
 import { ReactNode, createContext, useContext, useState } from "react";
-import { UserRole } from "../enums/UserRole";
-import { User } from "../models/User";
 import { AuthContextType } from "../models/AuthContextType";
+import { IUserAuth } from "../interfaces/IUserAuth";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<IUserAuth | null>(null);
 
-  const login = (userData: User) => { 
+  const login = (userData: IUserAuth) => { 
     setUser(userData);
     window.alert('Login realizado com sucesso'); 
   };

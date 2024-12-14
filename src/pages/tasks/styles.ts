@@ -13,7 +13,7 @@ export const styles = {
     height: 150,
     justifyContent: 'center' as 'center',
     alignItems: 'center' as 'center',
-    backgroundColor: '#232323' as string,
+    backgroundColor: '#EEF6F0' as string,
     border: 'none' as 'none',
     borderRadius: 14,
     padding: 20,
