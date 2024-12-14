@@ -1,7 +1,8 @@
-import { User } from "./User";
+import { IUserAuth } from "../interfaces/IUserAuth";
 
 export type AuthContextType = {
-  user: User | null;
-  login: (userData: User) => void;
+  role?: string;
+  user: IUserAuth | null;
+  login: (userData: IUserAuth) => void;
   logout: () => void;
 }
