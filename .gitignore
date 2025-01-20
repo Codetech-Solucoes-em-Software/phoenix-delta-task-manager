@@ -24,3 +24,6 @@ yarn-error.log*
 
 # debugging test folder
 .vscode
+
+# JSON Server
+src/data/*
