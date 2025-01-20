@@ -5,6 +5,7 @@ import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import TaskPage from "./pages/tasks/TaskPage";
+import Instructions from "./pages/tasks/instructions/Instructions";
 
 const PrivateRoute = ({ children, role }: { children: JSX.Element; role: 'admin' | 'user' }) => {
   const { user } = useAuth();
@@ -23,7 +24,7 @@ function App() {
           user ?
             <Navigate
               to={
-                user.role === 'admin' ? '/admin' : '/home'
+                user.role === 'user' ? '/home' : '/instructions'
               }
               replace
             />
@@ -32,11 +33,12 @@ function App() {
       <Route
         path="/login"
         element={
-          user ? <Navigate to={user.role === 'admin' ? '/admin' : '/home'} replace /> : <Login />
+          user ? <Navigate to={user.role === 'admin' ? '/instructions' : '/home'} replace /> : <Login />
         }
       />
       <Route path="/admin" element={<PrivateRoute role="admin"><TaskPage /></PrivateRoute>} />
       <Route path="/home" element={<PrivateRoute role="user"><Home /></PrivateRoute>} />
+      <Route path="/instructions" element={<Instructions />} />
       <Route
         path="*"
         element={<Navigate to={user ? (user.role === 'admin' ? '/admin' : '/home') : '/login'} replace />}
