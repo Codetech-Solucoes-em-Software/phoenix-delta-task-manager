@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import logoLojas from '../../../assets/logo-lojas-2.png';
-import { styles } from './styles'; 
+import { styles } from './styles';
+import { Link } from 'react-router-dom';
 
 interface Instruction {
   id: number;
@@ -106,8 +107,12 @@ export default function Instructions() {
           </div>
         ))}
       </div>
-
-      <button style={styles.addInstructionButton} onClick={addInstructionLine}>Adicionar Instrução</button>
+      <div style={styles.buttonContainer}>
+        <button style={styles.addInstructionButton} onClick={addInstructionLine}>Adicionar Instrução</button>
+        <li style={styles.addInstructionButton}>
+          <Link to="/admin" style={{ color: 'white', textDecoration: 'none' }}>Voltar</Link>
+        </li>
+      </div>
     </div>
   );
 }
