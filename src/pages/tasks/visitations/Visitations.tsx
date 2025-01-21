@@ -76,7 +76,7 @@ export default function Visitations() {
       {/* Tabela de Instruções */}
       <div style={styles.instructionsTable}>
         <div style={styles.tableHeader}>
-          <div style={styles.instructionsCol}>Trabalhos de Conclusão</div>
+          <div style={styles.instructionsCol}>Visita a Lojas e Entidades</div>
           <div style={styles.dateCol}>Data Prevista:</div>
           <div style={styles.dateCol}>Data de Entrega:</div>
           <div style={styles.uploadCol}></div>

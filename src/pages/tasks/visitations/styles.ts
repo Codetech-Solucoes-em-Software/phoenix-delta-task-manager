@@ -84,10 +84,12 @@ export const styles = {
     padding: '5px',
   },
   statusBadge: {
+    width: 140,
     display: 'inline-block',
     padding: '5px 10px',
     borderRadius: '5px',
     fontWeight: 'bold',
+    textAlign: 'center' as 'center'
   },
   statusBadgeConcluido: {
     backgroundColor: '#2ecc71',
