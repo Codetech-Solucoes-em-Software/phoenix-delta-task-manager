@@ -9,6 +9,7 @@ import Instructions from "./pages/tasks/instructions/Instructions";
 import Readings from "./pages/tasks/readings/Readings";
 import CompletionWorks from "./pages/tasks/completionWorks/CompletionWorks";
 import Visitations from "./pages/tasks/visitations/Visitations";
+import Admin from "./pages/admin/Admin";
 
 const PrivateRoute = ({ children, role }: { children: JSX.Element; role: 'admin' | 'user' }) => {
   const { user } = useAuth();
@@ -39,7 +40,7 @@ function App() {
           user ? <Navigate to={user.role === 'admin' ? '/instructions' : '/home'} replace /> : <Login />
         }
       />
-      <Route path="/admin" element={<PrivateRoute role="admin"><TaskPage /></PrivateRoute>} />
+      <Route path="/admin" element={<PrivateRoute role="admin"><Admin /></PrivateRoute>} />
       <Route path="/home" element={<PrivateRoute role="user"><Home /></PrivateRoute>} />
       <Route path="/instructions" element={<Instructions />} />
       <Route path="/readings" element={<Readings />} />
