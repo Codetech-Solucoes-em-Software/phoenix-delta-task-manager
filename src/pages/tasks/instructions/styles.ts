@@ -104,11 +104,13 @@ export const styles = {
   addInstructionButton: {
     padding: '10px',
     marginTop: '10px',
+    width: 200,
     backgroundColor: '#3498db',
     color: 'white',
     border: 'none',
     borderRadius: '3px',
     cursor: 'pointer',
+    textAlign: 'center' as 'center'
   },
   headerLogos: {
     marginTop: '20px',
@@ -121,4 +123,8 @@ export const styles = {
     height: '70px',
     borderRadius: '50%',
   },
+  buttonContainer: {
+    display: 'flex' as 'flex',
+    gap: 15
+  }
 };
