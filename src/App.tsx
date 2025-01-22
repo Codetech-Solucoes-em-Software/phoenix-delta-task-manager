@@ -1,15 +1,13 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
-// import Admin from "./pages/admin/Admin";
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
-import TaskPage from "./pages/tasks/TaskPage";
-import Instructions from "./pages/tasks/instructions/Instructions";
-import Readings from "./pages/tasks/readings/Readings";
-import CompletionWorks from "./pages/tasks/completionWorks/CompletionWorks";
-import Visitations from "./pages/tasks/visitations/Visitations";
 import Admin from "./pages/admin/Admin";
+import InstructionView from "./views/instructions/InstructionsView";
+import CompletionWorksView from "./views/completionWorks/CompletionWorksView";
+import VisitationsView from "./views/visitations/VisitationsView";
+import ReadingsView from "./views/readings/ReadingsView";
 
 const PrivateRoute = ({ children, role }: { children: JSX.Element; role: 'admin' | 'user' }) => {
   const { user } = useAuth();
@@ -42,10 +40,10 @@ function App() {
       />
       <Route path="/admin" element={<PrivateRoute role="admin"><Admin /></PrivateRoute>} />
       <Route path="/home" element={<PrivateRoute role="user"><Home /></PrivateRoute>} />
-      <Route path="/instructions" element={<Instructions />} />
-      <Route path="/readings" element={<Readings />} />
-      <Route path="/completionWorks" element={<CompletionWorks />} />
-      <Route path="/visitations" element={<Visitations />} />
+      <Route path="/instructions" element={<InstructionView />} />
+      <Route path="/readings" element={<ReadingsView />} />
+      <Route path="/completionWorks" element={<CompletionWorksView />} />
+      <Route path="/visitations" element={<VisitationsView />} />
       <Route
         path="*"
         element={<Navigate to={user ? (user.role === 'admin' ? '/admin' : '/home') : '/login'} replace />}
