@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-const BASE_TITLE = 'Task Manager';
+const BASE_TITLE = 'Evoluções';
 
 const useDocumentTitle = (pageTitle?: string) => {
   useEffect(() => {
