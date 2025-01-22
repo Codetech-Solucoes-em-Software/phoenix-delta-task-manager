@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { styles } from './styles';
+import useDocumentTitle from '../../hooks/PageTitle';
 
 export default function Admin() {
+  useDocumentTitle('Dashboard');
   return (
     <div style={styles.container}>
       {/* Cabeçalho */}
