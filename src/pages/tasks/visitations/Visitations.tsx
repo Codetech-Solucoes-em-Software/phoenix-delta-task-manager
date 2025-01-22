@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import logoLojas from '../../../assets/logo-lojas-2.png';
-import { styles } from './styles'; 
+import { styles } from './styles';
 import useDocumentTitle from '../../../hooks/PageTitle';
+import { Link } from 'react-router-dom';
 
 interface Visitation {
   id: number;
@@ -105,8 +106,12 @@ export default function Visitations() {
           </div>
         ))}
       </div>
-
-      <button style={styles.addInstructionButton} onClick={addInstructionLine}>Adicionar Instrução</button>
+      <div style={styles.buttonContainer}>
+        <button style={styles.addInstructionButton} onClick={addInstructionLine}>Adicionar Instrução</button>
+        <li style={styles.addInstructionButton}>
+          <Link to="/admin" style={{ color: 'white', textDecoration: 'none' }}>Voltar</Link>
+        </li>
+      </div>
     </div>
   );
 }
