@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useNavigate } from "react-router-dom";
+/*import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
 import { userExists, createUser, getUserByEmail } from "../../services/UserService";
-import { generateRefreshToken, generateToken } from "../../services/AuthService";
+import { authenticateUser, generateRefreshToken, generateToken } from "../../services/AuthService";
 import useDocumentTitle from "../../hooks/PageTitle";
 import masonLogo from '../../assets/331d4371a7b3d149e94095a89c372632.jpg';
 import MainLogo from '../../assets/logo-lojas-2.png';
@@ -53,7 +53,7 @@ export default function Register() {
         return;
       }
 
-      const registeredUser = await getUserByEmail(email); // Aguarda a resolução da Promise
+      const registeredUser = await authenticateUser(); // Aguarda a resolução da Promise
 
       if (!registeredUser || registeredUser.password !== password) {
         setError('Usuário ou senha incorretos.');
@@ -61,9 +61,8 @@ export default function Register() {
       }
 
       // Garante que o usuário encontrado possui um token
-      if (registeredUser.token) {
         login({
-          id: registeredUser.id ? Number(registeredUser.id) : undefined,
+          id: registeredUser.id,
           name: registeredUser.name,
           email: registeredUser.email,
           role: registeredUser.role,
@@ -131,4 +130,5 @@ export default function Register() {
       </div>
     </div>
   );
-}
+} */
+export default function Register() {}
