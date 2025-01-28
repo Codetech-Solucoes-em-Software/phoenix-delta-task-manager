@@ -1,8 +1,8 @@
 export interface IUserAuth {
   id: number | undefined;
-  name: string | undefined;
-  email: string | undefined;
-  degree?: string | undefined;
+  name: string;
+  email: string;
+  degree?: string;
   role?: string;
   token?: string;
 }
