@@ -10,7 +10,7 @@ import MainLogo from '../../assets/logo-lojas-2.png';
 import masonLogo from '../../assets/331d4371a7b3d149e94095a89c372632.jpg';
 import { styles } from "./styles";
 import { createUser, getUserByEmail, updateUser, userExists } from "../../services/UserService";
-
+import { IUserAuth } from "../../interfaces/IUserAuth";
 export default function Login() {
   useDocumentTitle('Login');
   const navigate = useNavigate();
@@ -18,51 +18,43 @@ export default function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const handleLogin = async (e: any) => {
-    e.preventDefault(); // Impede o comportamento padrão do formulário
-
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+  
+    if (!email || !password) {
+      setError('Por favor, preencha todos os campos.');
+      return;
+    }
+  
     try {
-      if (!email || !password) {
-        setError('Por favor, preencha todos os campos.');
-        return;
-      }
-  
-      const registeredUser = await getUserByEmail(email);
-  
-      // Valida se o usuário existe e se a senha está correta
-      if (!registeredUser || registeredUser.password !== password) {
-        setError('Usuário ou senha incorretos.');
-        return;
-      }
+      const data: any = { email, password };
+      console.log('Dados enviados: ', data);
+      const response: any = await authenticateUser(data);
 
-      let newToken;
+      console.log(response);
   
-      if (registeredUser.email) {
-        newToken = generateToken(registeredUser.email);
-        registeredUser.token = newToken;   
-        const updated = await updateUser(registeredUser); 
-        if (!updated) {
-          setError('Erro ao atualizar o token do usuário.');
-          return;
-        }    
+      if (response && response.access_token && response.access_token.access_token) {
+        const { access_token, user }: any = response.access_token;
+        const userAuth: IUserAuth = {
+          id: user.id ? Number(user.id) : undefined,
+          name: user.name,
+          email: user.email,
+          role: user.role,
+          token: access_token,
+        };
+  
+        login({ user: userAuth });
+        const path = user.role === 'ADMIN' ? '/admin' : '/home';
+        navigate(path);      
+      } else {
+        setError('Credenciais inválidas ou resposta inválida.');
       }
-
-      // Realiza o login e redireciona para a página correta
-      login({
-        id: registeredUser.id ? Number(registeredUser.id) : undefined,
-        name: registeredUser.name,
-        email: registeredUser.email,
-        role: registeredUser.role,
-        token: newToken,
-      });
-  
-      navigate(registeredUser.role === 'admin' ? '/admin' : '/home');
     } catch (error) {
       console.error('Erro durante o login:', error);
-      setError('Erro no servidor.');
+      setError('Erro no servidor. Tente novamente mais tarde.');
     }
   };
-
+  
   return (
     <div style={styles.container}>
       <div className={`
@@ -73,10 +65,10 @@ export default function Login() {
           <h1>Login</h1>
           {error && <p style={{ color: 'red' }}>{error}</p>}
           <div>
-            <input type="email" name="email" placeholder="Type your e-mail" onChange={(e) => setEmail(e.target.value)} style={styles.input}/>
+            <input type="email" name="email" placeholder="Type your e-mail" onChange={(e) => setEmail(e.target.value)} style={styles.input} />
           </div>
           <div>
-            <input type="password" name="" placeholder="Type your password" onChange={(e) => setPassword(e.target.value)} style={styles.input}/>
+            <input type="password" name="" placeholder="Type your password" onChange={(e) => setPassword(e.target.value)} style={styles.input} />
           </div>
           <button style={styles.button} type="submit" onClick={handleLogin}>Login</button>
         </form>
