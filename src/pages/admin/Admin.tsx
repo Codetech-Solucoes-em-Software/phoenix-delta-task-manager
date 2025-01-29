@@ -1,23 +1,40 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { styles } from './styles';
 import useDocumentTitle from '../../hooks/PageTitle';
+import { useAuth } from '../../context/AuthContext';
 
 export default function Admin() {
   useDocumentTitle('Dashboard');
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const handleLogout = () => {
+    logout();
+    navigate('/login');
+  };
   return (
     <div style={styles.container}>
       {/* Cabeçalho */}
       <div style={styles.header}>
-        <h1 style={{marginBottom: '10px', textAlign: 'center'}}>Administração do Sistema</h1>
+        <h1 style={{ marginBottom: '10px', textAlign: 'center' }}>Administração do Sistema</h1>
         <div style={styles.headerInfo}>
           <div style={styles.inputGroup}>
             <label style={styles.inputGroupLabel}>Nome:</label>
-            <input type="text" value="Fulano de Tal" readOnly style={styles.inputGroupInput} />
+            <input
+              type="text"
+              value={user?.name}
+              readOnly
+              style={styles.inputGroupInput}
+            />
           </div>
           <div style={styles.inputGroup}>
             <label style={styles.inputGroupLabel}>Grau:</label>
-            <input type="text" value="XYZ" readOnly style={styles.inputGroupInput}/>
+            <input
+              type="text"
+              value={user?.degree}
+              readOnly
+              style={styles.inputGroupInput}
+            />
           </div>
         </div>
       </div>
@@ -36,6 +53,28 @@ export default function Admin() {
             <Link to="/completionWorks" style={styles.linkButton}>Trabalhos de Conclusão</Link>
           </li>
         </ul>
+      </div>
+      <div style={{ 
+        display: 'flex',
+        justifyContent: 'center' 
+      }}>
+        <button
+          onClick={handleLogout}
+          style={{
+            display: 'flex',
+            marginTop: '10px',
+            padding: '10px 20px',
+            backgroundColor: '#d9534f',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '5px',
+            cursor: 'pointer',
+            alignItems: 'center',
+            justifyContent: 'center'
+          }}
+        >
+          Logout
+        </button>
       </div>
     </div>
   );
