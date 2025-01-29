@@ -9,7 +9,6 @@ import useDocumentTitle from "../../hooks/PageTitle";
 import MainLogo from '../../assets/logo-lojas-2.png';
 import masonLogo from '../../assets/331d4371a7b3d149e94095a89c372632.jpg';
 import { styles } from "./styles";
-import { createUser, getUserByEmail, updateUser, userExists } from "../../services/UserService";
 import { IUserAuth } from "../../interfaces/IUserAuth";
 export default function Login() {
   useDocumentTitle('Login');
@@ -40,6 +39,7 @@ export default function Login() {
           name: user.name,
           email: user.email,
           role: user.role,
+          degree: user.degree,
           token: access_token,
         };
   
