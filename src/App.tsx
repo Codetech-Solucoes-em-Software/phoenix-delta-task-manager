@@ -7,6 +7,7 @@ import InstructionView from "./views/instructions/InstructionsView";
 import CompletionWorksView from "./views/completionWorks/CompletionWorksView";
 import VisitationsView from "./views/visitations/VisitationsView";
 import ReadingsView from "./views/readings/ReadingsView";
+import TaskPage from "./pages/tasks/TaskPage";
 
 const PrivateRoute = ({ children, role }: { children: JSX.Element; role: 'ADMIN' | 'USER' }) => {
   const { user }: any = useAuth();
@@ -36,6 +37,7 @@ function App() {
         }
       />
       <Route path="/admin" element={<PrivateRoute role="ADMIN"><Admin /></PrivateRoute>} />
+      <Route path="/admin/createInstruction" element={<PrivateRoute role="ADMIN"><TaskPage /></PrivateRoute>} />
       <Route path="/home" element={<PrivateRoute role="USER"><Home /></PrivateRoute>} />
       <Route path="/instructions" element={<InstructionView />} />
       <Route path="/readings" element={<ReadingsView />} />
