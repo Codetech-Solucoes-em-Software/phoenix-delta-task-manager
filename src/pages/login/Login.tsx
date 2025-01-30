@@ -35,7 +35,7 @@ export default function Login() {
       if (response && response.access_token && response.access_token.access_token) {
         const { access_token, user }: any = response.access_token;
         const userAuth: IUserAuth = {
-          id: user.id ? Number(user.id) : undefined,
+          id: Number(user.id),
           name: user.name,
           email: user.email,
           role: user.role,
