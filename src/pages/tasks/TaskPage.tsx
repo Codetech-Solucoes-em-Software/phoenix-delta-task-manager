@@ -1,128 +1,116 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { v4 as uuidv4 } from 'uuid';
-import { FaCheck, FaTrashAlt } from "react-icons/fa";
-import { useEffect, useState } from "react";
-import { useAuth } from "../../context/AuthContext";
-import { Task } from "../../models/Task";
-import { 
-  completeTask, 
-  createTask, 
-  deleteTask, 
-  getAllTasks 
-} from "../../services/TaskService";
-import { styles } from "./styles";
-import useDocumentTitle from "../../hooks/PageTitle";
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { createInstruction } from '../../services/InstructionsService';
+import { getAllUsers } from '../../services/UserService';
+import { styles } from './styles';
+import { useAuth } from '../../context/AuthContext';
+import { IUserAuth } from '../../interfaces/IUserAuth';
 
-export default function TaskPage() {
-  useDocumentTitle('Tasks');
+export default function CreateInstruction() {
   const { user } = useAuth();
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [newTask, setNewTask] = useState({ title: '', description: '', isCompleted: false, createdBy: '', createdAt: new Date().getDate(), finishedAt: '', approvedAt: '' });
+  const navigate = useNavigate();
+  const [name, setName] = useState('');
+  const [expectedDate, setExpectedDate] = useState('');
+  const [userId, setUserId] = useState<number | "">("");
+  const [users, setUsers] = useState<IUserAuth[]>([]);
 
   useEffect(() => {
-    (async () => {
+    async function fetchUsers() {
       try {
-        const tasks = await getAllTasks();
-        setTasks(tasks);
-      } catch (error) {
-        console.error('Erro ao obter tarefas:', error);
-      }
-    })();
-  }, []);
-  
-  const handleCreateTask = async () => {
-    if (newTask.title && newTask.description) {
-      const task: Task = {
-        id: uuidv4(),
-        title: newTask.title,
-        description: newTask.description,
-        isCompleted: false,
-        createdBy: user?.role === 'admin' ? user?.name : '',
-        createdAt: new Date(),
-      };
-  
-      try {
-        const createdTask: any = await createTask(task); // Certifique-se de que o tipo retornado seja Task
-        if (createdTask) {
-          setTasks(prevTasks => [...prevTasks, createdTask]); // Atualiza o estado apenas se válido
-        } else {
-          console.error('Erro: createTask não retornou uma tarefa válida');
+        if (user) {
+          const response: any = await getAllUsers();
+          console.log("Resposta da API:", response);
+
+          // Verifica se response.data existe e é um array
+          if (response && Array.isArray(response)) {
+            setUsers(response); // Definindo diretamente o array
+          } else if (response && response.data && Array.isArray(response.data)) {
+            setUsers(response.data);
+          } else {
+            console.error("Formato inesperado da resposta:", response);
+            setUsers([]); // Garante que users nunca seja undefined
+          }
         }
-        setNewTask({ title: '', description: '', isCompleted: false, createdBy: '', createdAt: new Date().getDate(), finishedAt:  '' , approvedAt: '' });
       } catch (error) {
-        console.error('Erro ao criar tarefa:', error);
+        console.error("Erro ao buscar usuários:", error);
+        setUsers([]);
       }
     }
-  };
-  
-  const handleCompleteTask = async (taskId: string) => {
-    completeTask(taskId);
-    setTasks(await getAllTasks());
+    fetchUsers();
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !expectedDate || !userId) {
+      alert('Preencha todos os campos!');
+      return;
+    }
+
+    try {
+      await createInstruction({
+        name,
+        expected_date: expectedDate,
+        status: 'PENDENTE',
+        userId,
+      });
+      alert('Instrução criada com sucesso!');
+      navigate('/admin');
+    } catch (error) {
+      console.error('Erro ao criar instrução:', error);
+      alert('Erro ao criar instrução. Tente novamente.');
+    }
   };
 
-  const handleDeleteTask = async (taskId: string) => {
-    deleteTask(taskId);
-    setTasks(await getAllTasks());
-  };
   return (
     <div style={styles.container}>
-      {user?.role === 'admin' && (
-        <div style={styles.containerPage}>
-          <h3>A sua jornada do conhecimento começa aqui</h3>
-          <div style={styles.registerWindow}>
-            <label htmlFor="">
-              Nome:
-              {user.name}
-            </label>
-            <label htmlFor="">
-              Grau:
-              {user.degree}
-            </label>
-            {/* <input
-              type="date"
-              value={newTask.finishedAt}
-              onChange={(e) => setNewTask({ ...newTask, finishedAt: e.target.value })}
-              style={styles.input}
-            /> */}
-          </div>
+      <h2 style={styles.title}>Criar Nova Instrução</h2>
+      <form style={styles.form} onSubmit={handleSubmit}>
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Nome da Instrução:</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            style={styles.input}
+            required
+          />
         </div>
-      )}
 
-      <ul style={styles.listTask}>
-        <div style={styles.containerTitle}>
-          <h2 style={styles.title}>Tarefas</h2>
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Data Esperada de Finalização:</label>
+          <input
+            type="date"
+            value={expectedDate}
+            onChange={(e) => setExpectedDate(e.target.value)}
+            style={styles.input}
+            required
+          />
         </div>
-        {tasks.map((task, index) => (
-          <li key={task.id || index} style={styles.task}>
-            <div>
-              <h6>{task.title}</h6>
-            </div>
-            <div>
-              <p>{task.description}</p>
-            </div>
-            <div>
-             <p>Criado por: {task.createdBy}</p>
-            </div>
-            <div>
-             <p>Finalizdo em: {task.finishedAt?.toDateString()}</p>
-            </div>
-            <div>
-              {task.isCompleted ? (
-                <p style={{ backgroundColor: 'green', padding: 5, borderRadius: 5, color: '#fff' }}>Concluída</p>
-              ) : (
-                <button onClick={() => handleCompleteTask(task.id)} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
-                  <FaCheck size={20} color="green" />
-                </button>
-              )}
-              {user?.role === 'admin' && (
-                <button onClick={() => handleDeleteTask(task.id)} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
-                  <FaTrashAlt size={20} color="red" />
-                </button>
-              )}
-            </div>
-          </li>
-        ))}
-      </ul>
+
+        <div style={styles.formGroup}>
+          <label style={styles.label}>Atribuir para:</label>
+          <select
+            value={userId}
+            onChange={(e) => setUserId(Number(e.target.value))}
+            style={styles.input}
+            required
+          >
+            <option value="">Selecione um usuário</option>
+            {users.length > 0 ? (
+              users.map((user) => (
+                <option key={user.id} value={user.id}>{user.name}</option>
+              ))
+            ) : (
+              <option disabled>Carregando usuários...</option>
+            )}
+          </select>
+        </div>
+
+        <div style={styles.buttonGroup}>
+          <button type="submit" style={styles.button}>Criar Instrução</button>
+          <button type="button" style={styles.button} onClick={() => navigate('/admin')}>Voltar</button>
+        </div>
+      </form>
     </div>
   );
 }
