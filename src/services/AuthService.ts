@@ -1,7 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
 import api from './Api';
 import { getAllUsers } from './UserService';
-import { getUserByEmail, updateUser } from './UserService';
+import { getUserByEmail } from './UserService';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const TOKEN_EXPIRATION_TIME = 60 * 60 * 1000;
 
@@ -36,7 +36,7 @@ const validateToken = async (token: string): Promise<boolean> => {
   return users.some((user) => user.token === token);
 };
 
-const refreshToken = async (refreshToken: string): Promise<string> => {
+/*const refreshToken = async (refreshToken: string): Promise<string> => {
   const users = await getAllUsers();  
   const user = users.find((u) => u.refreshToken === refreshToken);
 
@@ -49,10 +49,10 @@ const refreshToken = async (refreshToken: string): Promise<string> => {
 
   await updateUser(user);
   return newToken;
-};
+}; */
 
 export {
-  refreshToken,
+  // refreshToken,
   validateToken,
   authenticateUser,
   generateRefreshToken,
