@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import logoLojas from '../../../assets/logo-lojas-2.png';
-import { styles } from './styles'; 
+import { styles } from './styles';
 import useDocumentTitle from '../../../hooks/PageTitle';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../context/AuthContext';
 
 interface CompletionWork {
   id: number;
@@ -16,6 +17,8 @@ interface CompletionWork {
 
 export default function CompletionWorks() {
   useDocumentTitle('Trabalhos de Conclusão');
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [completionWorks, setCompletionWorks] = useState<CompletionWork[]>([
     {
       id: 1, userId: 1, name: 'O Caiballion', expected_date: '01/01/2001', finished_date: '01/01/2001', status: 'AGUARDANDO',
@@ -112,6 +115,16 @@ export default function CompletionWorks() {
         <li style={styles.addInstructionButton}>
           <Link to="/admin" style={{ color: 'white', textDecoration: 'none' }}>Voltar</Link>
         </li>
+        {user?.role === "ADMIN" && (
+          <li style={styles.addInstructionButton}>
+            <button
+              onClick={() => navigate("/admin/createCompletionWork")}
+              style={{ color: "white", textDecoration: "none", border: "none", background: "transparent", cursor: "pointer" }}
+            >
+              Adicionar Trabalho
+            </button>
+          </li>
+        )}
       </div>
     </div>
   );
