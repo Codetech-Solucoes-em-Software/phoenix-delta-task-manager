@@ -161,7 +161,6 @@ export default function Instructions() {
         <li style={styles.addInstructionButton}>
           <Link to="/admin" style={{ color: "white", textDecoration: "none" }}>Voltar</Link>
         </li>
-        {/* Exibir botão "Adicionar Instrução" somente para ADMIN */}
         {user?.role === "ADMIN" && (
           <li style={styles.addInstructionButton}>
             <button
