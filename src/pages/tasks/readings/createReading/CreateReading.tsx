@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createInstruction } from '../../services/InstructionsService';
-import { getAllUsers } from '../../services/UserService';
+import { createInstruction } from '../../../../services/InstructionsService';
+import { getAllUsers } from '../../../../services/UserService';
 import { styles } from './styles';
-import { useAuth } from '../../context/AuthContext';
-import { IUserAuth } from '../../interfaces/IUserAuth';
+import { useAuth } from '../../../../context/AuthContext';
+import { IUserAuth } from '../../../../interfaces/IUserAuth';
+import useDocumentTitle from '../../../../hooks/PageTitle';
 
-export default function CreateInstruction() {
+export default function CreateReading() {
+  useDocumentTitle('Adicionar Leitura')
   const { user } = useAuth();
   const navigate = useNavigate();
   const [name, setName] = useState('');
@@ -53,11 +55,11 @@ export default function CreateInstruction() {
         status: 'PENDENTE',
         userId,
       });
-      alert('Instrução criada com sucesso!');
+      alert('Leitura criada com sucesso!');
       navigate('/admin');
     } catch (error) {
-      console.error('Erro ao criar instrução:', error);
-      alert('Erro ao criar instrução. Tente novamente.');
+      console.error('Erro ao criar a leitura:', error);
+      alert('Erro ao criar leitura. Tente novamente.');
     }
   };
 
@@ -66,7 +68,7 @@ export default function CreateInstruction() {
       <h2 style={styles.title}>Criar Nova Instrução</h2>
       <form style={styles.form} onSubmit={handleSubmit}>
         <div style={styles.formGroup}>
-          <label style={styles.label}>Nome da Instrução:</label>
+          <label style={styles.label}>Nome da Leitura:</label>
           <input
             type="text"
             value={name}
@@ -107,7 +109,7 @@ export default function CreateInstruction() {
         </div>
 
         <div style={styles.buttonGroup}>
-          <button type="submit" style={styles.button}>Criar Instrução</button>
+          <button type="submit" style={styles.button}>Adicionar Leitura</button>
           <button type="button" style={styles.button} onClick={() => navigate('/admin')}>Voltar</button>
         </div>
       </form>

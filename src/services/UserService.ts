@@ -1,19 +1,23 @@
 import { User } from "../models/User";
-
-const API_URL = 'http://localhost:5000/users';
+import api from "./Api";
 
 // Função para obter todos os usuários
 const getAllUsers = async (): Promise<User[]> => {
-  const response = await fetch(API_URL);
-  return await response.json();
+  try {
+    const url = '/users';
+    const response: any = await api.get<User[]>(url);
+    return response.data;    
+  } catch (error: any) {
+    throw new Error(error);
+  }
 };
 
 // Função para obter um usuário pelo email
 const getUserByEmail = async (email: string): Promise<User> => {
   if (!email) throw new Error('Usuário não existente');
-  const response = await fetch(`${API_URL}?email=${email}`);
-  const users = await response.json();
-  return users[0];
+  const response: any = await api.get<User>(`users/${email}`);
+  const users = await response.data[0];
+  return users;
 };
 
 const createUser = async (user: User) => {
@@ -30,7 +34,7 @@ const createUser = async (user: User) => {
 };
 
 // Função para atualizar um usuário existente
-const updateUser = async (updatedUser: User): Promise<boolean> => {
+/*const updateUser = async (updatedUser: User): Promise<boolean> => {
   const response = await fetch(`${API_URL}/${updatedUser.id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
@@ -47,7 +51,7 @@ const deleteUser = async (userId: number): Promise<boolean> => {
   });
 
   return response.ok;
-};
+}; */
 
 const userExists = async (email: string): Promise<boolean> => {
   const users = await getAllUsers();
@@ -61,8 +65,8 @@ export {
   getAllUsers,
   getUserByEmail,
   createUser,
-  updateUser,
-  deleteUser,
+  // updateUser,
+  // deleteUser,
   getLoggedInUser,
   userExists
 };

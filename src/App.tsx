@@ -7,6 +7,10 @@ import InstructionView from "./views/instructions/InstructionsView";
 import CompletionWorksView from "./views/completionWorks/CompletionWorksView";
 import VisitationsView from "./views/visitations/VisitationsView";
 import ReadingsView from "./views/readings/ReadingsView";
+import TaskPage from "./pages/tasks/TaskPage";
+import CreateInstruction from "./pages/tasks/TaskPage";
+import CreateCompletionWork from "./pages/tasks/completionWorks/createCompletionWork/CreateCompletionWork";
+import CreateReading from "./pages/tasks/readings/createReading/CreateReading";
 
 const PrivateRoute = ({ children, role }: { children: JSX.Element; role: 'ADMIN' | 'USER' }) => {
   const { user }: any = useAuth();
@@ -36,6 +40,9 @@ function App() {
         }
       />
       <Route path="/admin" element={<PrivateRoute role="ADMIN"><Admin /></PrivateRoute>} />
+      <Route path="/admin/createInstruction" element={<PrivateRoute role="ADMIN"><CreateInstruction /></PrivateRoute>} />
+      <Route path="/admin/createCompletionWork" element={<PrivateRoute role="ADMIN"><CreateCompletionWork /></PrivateRoute>} />
+      <Route path="/admin/createReading" element={<PrivateRoute role="ADMIN"><CreateReading /></PrivateRoute>} />
       <Route path="/home" element={<PrivateRoute role="USER"><Home /></PrivateRoute>} />
       <Route path="/instructions" element={<InstructionView />} />
       <Route path="/readings" element={<ReadingsView />} />

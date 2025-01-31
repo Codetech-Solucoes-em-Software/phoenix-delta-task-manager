@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createInstruction } from '../../services/InstructionsService';
-import { getAllUsers } from '../../services/UserService';
+import { createInstruction } from '../../../../services/InstructionsService';
+import { getAllUsers } from '../../../../services/UserService';
 import { styles } from './styles';
-import { useAuth } from '../../context/AuthContext';
-import { IUserAuth } from '../../interfaces/IUserAuth';
+import { useAuth } from '../../../../context/AuthContext';
+import { IUserAuth } from '../../../../interfaces/IUserAuth';
+import useDocumentTitle from '../../../../hooks/PageTitle';
 
 export default function CreateInstruction() {
+  useDocumentTitle('Adicionar Instrução');
   const { user } = useAuth();
   const navigate = useNavigate();
   const [name, setName] = useState('');
