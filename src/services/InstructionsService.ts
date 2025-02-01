@@ -5,8 +5,8 @@ export interface Instruction {
   userId: number;
   name: string;
   expected_date: string;
-  finished_date: string;
-  approved_date: string;
+  finished_date?: string;
+  approved_date?: string;
   status: string;
 }
 
@@ -28,6 +28,15 @@ const getInstructions = async (role: string, userId: number): Promise<Instructio
   }
 };
 
+const getInstructionById = async (id: number): Promise<Instruction> => {
+  try {
+    const response: any = await api.get<Instruction>(`/classicalLessons/${id}`);
+    return response.data;
+  } catch (error: any) {
+    throw new Error('Ocorreu um erro ao buscar a instrução', error);
+  }
+};
+
 const createInstruction = async (data: CreateInstructionDTO) => {
   try {
     const response = await api.post("/classicalLessons", data);
@@ -38,7 +47,18 @@ const createInstruction = async (data: CreateInstructionDTO) => {
   }
 }
 
+const updateInstruction = async (id: number, instruction: Instruction) => {
+  try {
+     const update = await api.put(`/classicalLessons/${id}`, instruction);
+     return update;
+  } catch (error: any) {
+    throw new Error('Ocorreu um erro ao modificar a instrução', error);
+  }
+};
+
 export {
   getInstructions,
-  createInstruction
+  createInstruction,
+  updateInstruction,
+  getInstructionById
 };

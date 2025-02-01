@@ -2,7 +2,7 @@
 /* eslint-disable no-restricted-globals */
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import { getUser } from "../../services/UserService";
 import { authenticateUser, generateRefreshToken, generateToken } from "../../services/AuthService";
 import useDocumentTitle from "../../hooks/PageTitle";
@@ -19,19 +19,19 @@ export default function Login() {
   const [error, setError] = useState('');
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     if (!email || !password) {
       setError('Por favor, preencha todos os campos.');
       return;
     }
-  
+
     try {
       const data: any = { email, password };
       console.log('Dados enviados: ', data);
       const response: any = await authenticateUser(data);
 
       console.log(response);
-  
+
       if (response && response.access_token && response.access_token.access_token) {
         const { access_token, user }: any = response.access_token;
         const userAuth: IUserAuth = {
@@ -42,10 +42,10 @@ export default function Login() {
           degree: user.degree,
           token: access_token,
         };
-  
+
         login({ user: userAuth });
         const path = user.role === 'ADMIN' ? '/admin' : '/home';
-        navigate(path);      
+        navigate(path);
       } else {
         setError('Credenciais inválidas ou resposta inválida.');
       }
@@ -54,7 +54,7 @@ export default function Login() {
       setError('Erro no servidor. Tente novamente mais tarde.');
     }
   };
-  
+
   return (
     <div style={styles.container}>
       <div className={`
@@ -70,6 +70,9 @@ export default function Login() {
           <div>
             <input type="password" name="" placeholder="Type your password" onChange={(e) => setPassword(e.target.value)} style={styles.input} />
           </div>
+          <p style={{ marginTop: "10px" }}>
+            Não tem uma conta? <Link to="/register">Faça seu registro aqui</Link>
+          </p>
           <button style={styles.button} type="submit" onClick={handleLogin}>Login</button>
         </form>
       </div>

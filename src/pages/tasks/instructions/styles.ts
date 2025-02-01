@@ -1,7 +1,7 @@
 export const styles = {
   container: {
     fontFamily: 'sans-serif' as 'sans-serif',
-    width: '80%' as string,
+    width: '85%' as string,
     margin: '20px auto' as string,
     //border: '1px solid #ccc' as string,
     padding: '20px' as '20px',
@@ -50,6 +50,11 @@ export const styles = {
   },
   instructionRow: {
     display: 'grid',
+    gridTemplateColumns: '3fr 1fr 1fr 1fr 0.5fr 0.5fr',
+    padding: '10px 0',
+  },
+  instructionRowUser: {
+    display: 'grid',
     gridTemplateColumns: '3fr 1fr 1fr 1fr 1fr',
     padding: '10px 0',
   },
@@ -83,6 +88,11 @@ export const styles = {
   statusCol: {
     padding: '5px',
   },
+  actions: {
+    padding: '5px',
+    textAlign: 'center' as 'center',
+    marginRight: 25
+  },
   statusBadge: {
     display: 'inline-block',
     padding: '5px 10px',
@@ -102,10 +112,34 @@ export const styles = {
     color: 'white',
   },
   addInstructionButton: {
-    padding: '10px',
-    marginTop: '10px',
+    padding: '10px' as string,
+    marginTop: '10px' as string,
     width: 200,
     backgroundColor: '#3498db',
+    color: 'white' as 'white',
+    border: 'none' as 'none',
+    borderRadius: '3px',
+    cursor: 'pointer' as string,
+    textAlign: 'center' as 'center'
+  },
+  updateInstructionButton: {
+    //padding: '5px',
+    marginTop: '5px',
+    width: 50,
+    height: 35,
+    backgroundColor: '#2ecc71',
+    color: 'white',
+    border: 'none',
+    borderRadius: '3px',
+    cursor: 'pointer',
+    textAlign: 'center' as 'center',
+    alignItems: 'center' as 'center'
+  },
+  removeInstructionButton: {
+    padding: '5px',
+    marginTop: '5px',
+    width: 50,
+    backgroundColor: '#e74c3c',
     color: 'white',
     border: 'none',
     borderRadius: '3px',

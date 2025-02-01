@@ -20,17 +20,21 @@ const getUserByEmail = async (email: string): Promise<User> => {
   return users;
 };
 
-const createUser = async (user: User) => {
-  const response = await fetch("http://localhost:5000/users", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(user),
-  });
-
-  const newUser = await response.json();
-  return newUser;
+const createUser = async (userData: 
+  {
+    name: string;
+    email: string;
+    password: string;
+    degree: string;
+    lodge: string;
+    role: string;
+  }) => {
+  try {
+    const response: any = await api.post('/users', userData);
+    return response.data;
+  } catch (error: any) {
+    throw new Error('Ocorreu um erro ao registrar o usuário', error);
+  }
 };
 
 // Função para atualizar um usuário existente
