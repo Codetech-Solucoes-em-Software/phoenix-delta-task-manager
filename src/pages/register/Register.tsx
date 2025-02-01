@@ -1,134 +1,130 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/*import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useNavigate, Link } from "react-router-dom";
 import { useState } from "react";
-import { userExists, createUser, getUserByEmail } from "../../services/UserService";
-import { authenticateUser, generateRefreshToken, generateToken } from "../../services/AuthService";
+import { createUser } from "../../services/UserService";
+import { authenticateUser } from "../../services/AuthService";
+import { useAuth } from "../../context/AuthContext";
 import useDocumentTitle from "../../hooks/PageTitle";
 import masonLogo from '../../assets/331d4371a7b3d149e94095a89c372632.jpg';
 import MainLogo from '../../assets/logo-lojas-2.png';
 import { styles } from "./styles";
+import { IUserAuth } from "../../interfaces/IUserAuth";
 
 export default function Register() {
-  useDocumentTitle('Register');
+  useDocumentTitle("Registrar Usuário");
   const navigate = useNavigate();
   const { login } = useAuth();
-  
-  const [name, setName] = useState('');
-  const [degree, setDegree] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const role = 'admin';
-  const [lodge, setLodge] = useState<'phoenix' | 'delta'>('phoenix');
-  const [error, setError] = useState('');
 
-  const handleRegister = async () => {
+  // Estados para os campos do formulário
+  const [name, setName] = useState("");
+  const [degree, setDegree] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [lodge, setLodge] = useState<"phoenix" | "delta">("phoenix");
+  const role: string = 'USER';
+  const [error, setError] = useState("");
+
+  const handleRegister = async (e: React.FormEvent) => {
+    e.preventDefault(); // Evita recarregar a página
+
+    if (!name || !degree || !email || !password) {
+      setError("Por favor, preencha todos os campos.");
+      return;
+    }
+
     try {
-      if (!email || !password) {
-        setError('Por favor, preencha todos os campos.');
+      // Chama a API para registrar o usuário
+      await createUser({ name, degree, email, password, lodge, role });
+
+      const userData = { email, password };
+
+      // Autentica o usuário após o cadastro
+      const authenticatedUser = await authenticateUser(userData);
+
+      if (!authenticatedUser || !authenticatedUser.access_token) {
+        setError("Erro ao autenticar usuário após cadastro.");
         return;
       }
 
-      const exists = await userExists(email);
-      if (await exists) {
-        setError('Usuário já existe.');
-        return;
-      }
-
-      const newUser = {
-        id: new Date().getDate().toString(),
-        name,
-        degree,
-        lodge,
-        email,
-        password,
-        role,
-        token: generateToken(email),
-        refreshToken: generateRefreshToken(email),
+      const userAuth: IUserAuth = {
+        id: authenticatedUser.access_token.user.id,
+        name: authenticatedUser.access_token.user.name,
+        email: authenticatedUser.access_token.user.email,
+        role: authenticatedUser.access_token.user.role,
+        degree: authenticatedUser.access_token.user.degree,
+        token: authenticatedUser.access_token.access_token,
       };
-      
-      const success = createUser(newUser);
-      if (!success) {
-        setError('Erro ao criar usuário.');
-        return;
-      }
 
-      const registeredUser = await authenticateUser(); // Aguarda a resolução da Promise
+      login({ user: userAuth });
 
-      if (!registeredUser || registeredUser.password !== password) {
-        setError('Usuário ou senha incorretos.');
-        return;
-      }
-
-      // Garante que o usuário encontrado possui um token
-        login({
-          id: registeredUser.id,
-          name: registeredUser.name,
-          email: registeredUser.email,
-          role: registeredUser.role,
-          token: registeredUser.token,
-        });
-
-        // Redireciona o usuário com base na função
-        navigate(registeredUser.role === 'admin' ? '/admin' : '/home');
-      } else {
-        setError('Erro ao obter o token do usuário.');
-      }
+      // Redireciona o usuário para a página correta
+      navigate('/login');
     } catch (error) {
-      console.error('Erro durante o login:', error);
-      setError('Erro no servidor.');
+      console.error("Erro no cadastro:", error);
+      setError("Erro ao registrar usuário. Tente novamente.");
     }
   };
+
   return (
     <div style={styles.container}>
-      <div className={`
-        col-sm-5 d-flex justify-content-center
-      `}>
-        <form action="" style={styles.registerForm}>
+      <div className="col-sm-5 d-flex justify-content-center">
+        <form style={styles.registerForm} onSubmit={handleRegister}>
           <img style={styles.logoHeaderLogin} src={masonLogo} alt="Logo Maçonaria" />
           <h2>Registrar</h2>
-          {error && <p style={{ color: 'red' }}>{error}</p>}
-            <input
-              type="text"
-              placeholder="Nome Completo"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              style={styles.input}
-            />
-            <input
-              type="text"
-              placeholder="Digite o grau"
-              value={degree}
-              onChange={(e) => setDegree(e.target.value)}
-              style={styles.input}
-            />
-            <input
-              type="text"
-              placeholder="Digite seu e-mail"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              style={styles.input}
-            />
-            <input
-              type="password"
-              placeholder="Digite sua senha"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              style={styles.input}
-            />
-            <select
-              style={styles.input} 
-              onChange={(e) => setLodge(e.target.value as 'phoenix' | 'delta')}>
-              <option value="phoenix">Phoenix</option>
-              <option value="delta">Delta</option>
-            </select>
-          <button style={styles.button} onClick={handleRegister}>Registrar</button>
+
+          {error && <p style={{ color: "red" }}>{error}</p>}
+
+          <input
+            type="text"
+            placeholder="Nome Completo"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            style={styles.input}
+            required
+          />
+
+          <input
+            type="text"
+            placeholder="Digite o grau"
+            value={degree}
+            onChange={(e) => setDegree(e.target.value)}
+            style={styles.input}
+            required
+          />
+
+          <input
+            type="email"
+            placeholder="Digite seu e-mail"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            style={styles.input}
+            required
+          />
+
+          <input
+            type="password"
+            placeholder="Digite sua senha"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            style={styles.input}
+            required
+          />
+
+          <select style={styles.input} value={lodge} onChange={(e) => setLodge(e.target.value as "phoenix" | "delta")}>
+            <option value="phoenix">Phoenix</option>
+            <option value="delta">Delta</option>
+          </select>
+
+          <button type="submit" style={styles.button}>Registrar</button>
+
+          <p style={{ marginTop: "10px" }}>
+            Já tem uma conta? <Link to="/login">Faça login aqui</Link>
+          </p>
         </form>
       </div>
+
       <div className="col-sm-7">
-        <img src={MainLogo} alt="Logo Principal" style={styles.logo}/>
+        <img src={MainLogo} alt="Logo Principal" style={styles.logo} />
       </div>
     </div>
   );
-} */
-export default function Register() {}
+}
