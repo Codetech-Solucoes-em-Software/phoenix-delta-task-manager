@@ -11,6 +11,7 @@ import TaskPage from "./pages/tasks/TaskPage";
 import CreateInstruction from "./pages/tasks/TaskPage";
 import CreateCompletionWork from "./pages/tasks/completionWorks/createCompletionWork/CreateCompletionWork";
 import CreateReading from "./pages/tasks/readings/createReading/CreateReading";
+import Register from "./pages/register/Register";
 
 const PrivateRoute = ({ children, role }: { children: JSX.Element; role: 'ADMIN' | 'USER' }) => {
   const { user }: any = useAuth();
@@ -33,6 +34,7 @@ function App() {
 
   return (
     <Routes>
+      <Route path="/register" element={<Register />} />
       <Route
         path="/login"
         element={
