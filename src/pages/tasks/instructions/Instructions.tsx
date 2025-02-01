@@ -6,6 +6,7 @@ import { useAuth } from "../../../context/AuthContext";
 import { getInstructions } from "../../../services/InstructionsService";
 import useDocumentTitle from "../../../hooks/PageTitle";
 import { uploadFile } from "../../../services/FileService";
+import { MdEdit, MdDelete } from 'react-icons/md';
 
 interface Instruction {
   id: number;
@@ -28,7 +29,6 @@ export default function Instructions() {
     if (user) {
       getInstructions(user.role, user.id)
         .then((data: any) => {
-          console.log("📌 Instruções carregadas:", data);
           if (user.role === 'ADMIN') {
             setInstructions(Array.isArray(data.classicalLessons) ? data.classicalLessons : []);
           } else {
@@ -45,6 +45,19 @@ export default function Instructions() {
       <p style={{ textAlign: "center", marginTop: 20 }}>Carregando usuário...</p>
     );
   }
+
+  const getStatusBadgeClasses = (status: string) => {
+    switch (status) {
+      case 'CONCLUIDO':
+        return { ...styles.statusBadge, ...styles.statusBadgeConcluido };
+      case 'REVISAR':
+        return { ...styles.statusBadge, ...styles.statusBadgeRevisar }
+      case 'AGUARDANDO':
+        return { ...styles.statusBadge, ...styles.statusBadgeAguardando }
+      default:
+        return styles.statusBadge;
+    }
+  };
 
   return (
     <div style={styles.container}>
@@ -96,9 +109,12 @@ export default function Instructions() {
               <div style={styles.dateCol}>Data Prevista</div>
               <div style={styles.dateCol}>Data de Entrega</div>
               <div style={styles.statusCol}>Situação</div>
+              {user.role === 'ADMIN' && (
+                <div style={styles.actions}>Ações</div>                
+              )}
             </div>
             {instructions.map((item) => (
-              <div key={item.id} style={styles.instructionRow}>
+              <div key={item.id} style={user.role === 'ADMIN' ? styles.instructionRow : styles.instructionRowUser}>
                 <div style={styles.instructionsCol}>
                   <p style={styles.instructionsColP}>{item.name}</p>
                 </div>
@@ -127,8 +143,28 @@ export default function Instructions() {
                   />
                 </div>
                 <div style={styles.statusCol}>
-                  <span style={styles.statusBadge}>{item.status}</span>
+                  <span style={getStatusBadgeClasses(item.status)}>{item.status}</span>
                 </div>
+                {user.role === 'ADMIN' && (
+                  <>
+                    <div>
+                      <button
+                        onClick={() => navigate(`/admin/updateInstruction/${item.id}`)}
+                        style={styles.updateInstructionButton}
+                      >
+                        <MdEdit />
+                      </button>
+                    </div>
+                    <div>
+                      <button
+                        onClick={() => navigate(`/admin/removeInstruction/${item.id}`)}
+                        style={styles.removeInstructionButton}
+                      >
+                        <MdDelete />
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             ))}
           </div>
