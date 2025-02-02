@@ -100,16 +100,22 @@ export const styles = {
     fontWeight: 'bold',
   },
   statusBadgeConcluido: {
+    width: 140,
     backgroundColor: '#2ecc71',
-    color: 'white',
+    color: 'white' as 'white',
+    textAlign: 'center' as 'center'
   },
   statusBadgeRevisar: {
+    width: 140,
     backgroundColor: '#f1c40f',
     color: 'white',
+    textAlign: 'center' as 'center'
   },
   statusBadgeAguardando: {
+    width: 140,
     backgroundColor: '#e74c3c',
     color: 'white',
+    textAlign: 'center' as 'center'
   },
   addInstructionButton: {
     padding: '10px' as string,
