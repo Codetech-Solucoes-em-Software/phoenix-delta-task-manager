@@ -97,13 +97,13 @@ export default function UpdateInstruction() {
           <label style={styles.label}>Status:</label>
             <select name="status" value={instruction.status} onChange={handleChange} required style={styles.input}>
               <option value="PENDENTE">Pendente</option>
-              <option value="CONCLUIDO">Concluído</option>
+              <option value="CONCLUÍDO">Concluído</option>
               <option value="REVISAR">Revisar</option>
               <option value="AGUARDANDO">Aguardando</option>
             </select>
         </div>
         <div style={styles.buttonGroup}>
-          <button type="submit" disabled={saving} style={styles.button}>
+          <button type="submit" disabled={saving} style={styles.button} onClick={handleSubmit}>
             {saving ? "Salvando..." : "Salvar Alterações"}
           </button>
           <button style={styles.button} type="button" onClick={() => navigate("/instructions")}>
