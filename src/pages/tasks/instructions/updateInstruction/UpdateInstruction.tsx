@@ -17,6 +17,7 @@ export default function UpdateInstruction() {
     userId: 0,
     name: "",
     expected_date: "",
+    approved_date: "",
     status: "",
   });
 
@@ -85,6 +86,12 @@ export default function UpdateInstruction() {
             Data Esperada de Finalização:
           </label>
           <input type="date" name="expected_date" value={instruction.expected_date} onChange={handleChange} required style={styles.input} />
+        </div>
+        <div style={styles.formGroup}>
+          <label style={styles.label}>
+            Data Aprovação de Comissão:
+          </label>
+          <input type="date" name="approved_date" value={instruction.approved_date} onChange={handleChange} required style={styles.input} />
         </div>
         <div style={styles.formGroup}>
           <label style={styles.label}>Status:</label>
