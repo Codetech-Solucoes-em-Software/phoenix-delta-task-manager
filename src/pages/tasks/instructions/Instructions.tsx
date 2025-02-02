@@ -22,37 +22,47 @@ export default function Instructions() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const [instructions, setInstructions] = useState<Instruction[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (user) {
-      getInstructions(user.role, user.id)
-        .then((data: any) => {
-          if (user.role === 'ADMIN') {
-            setInstructions(Array.isArray(data.classicalLessons) ? data.classicalLessons : []);
-          } else {
-            setInstructions(data.lessonsUser ? [data.lessonsUser] : []);
-          }
-        })
-        .catch((error) => console.error("🚨 Erro ao buscar instruções:", error))
-        .finally(() => setLoading(false));
-    }
-  }, [user]);
+    if (!user) return;
 
-  if (!user) {
-    return (
-      <p style={{ textAlign: "center", marginTop: 20 }}>Carregando usuário...</p>
-    );
-  }
+    setLoading(true);
+
+    getInstructions(user.role, user.id)
+      .then((data: any) => {
+        if (user.role === "ADMIN") {
+          setInstructions(Array.isArray(data.classicalLessons) ? data.classicalLessons : []);
+        } else {
+          // Garante que `data.lessonsUser` seja um array ou um array vazio
+          const userInstructions = Array.isArray(data.lessonsUser)
+            ? data.lessonsUser
+            : data.lessonsUser
+              ? [data.lessonsUser]
+              : [];
+
+          setInstructions(userInstructions);
+        }
+      })
+      .catch((error) => {
+        console.error("🚨 Erro ao buscar instruções:", error);
+        setInstructions([]); // Garante que `instructions` seja sempre um array
+      })
+      .finally(() => setLoading(false));
+  }, [user]);
 
   const getStatusBadgeClasses = (status: string) => {
     switch (status) {
-      case 'CONCLUIDO':
+      case 'CONCLUÍDO':
+        return { ...styles.statusBadge, ...styles.statusBadgeConcluido };
+      case 'CONCLUíDO':
         return { ...styles.statusBadge, ...styles.statusBadgeConcluido };
       case 'REVISAR':
         return { ...styles.statusBadge, ...styles.statusBadgeRevisar }
       case 'AGUARDANDO':
+        return { ...styles.statusBadge, ...styles.statusBadgeAguardando }
+      case 'PENDENTE':
         return { ...styles.statusBadge, ...styles.statusBadgeAguardando }
       default:
         return styles.statusBadge;
@@ -61,7 +71,6 @@ export default function Instructions() {
 
   return (
     <div style={styles.container}>
-      {/* Cabeçalho */}
       <div style={styles.header}>
         <h1 style={styles.headerTitle}>
           A sua Jornada do Conhecimento começa aqui:
@@ -89,32 +98,30 @@ export default function Instructions() {
         </div>
       </div>
 
-      {/* Mensagem de carregamento */}
       {loading ? (
         <p style={{ textAlign: "center", marginTop: 20 }}>
           Carregando instruções...
         </p>
       ) : instructions.length === 0 ? (
         <p style={{ textAlign: "center", marginTop: 20 }}>
-          {user.role === "ADMIN"
+          {user?.role === "ADMIN"
             ? "Nenhuma instrução encontrada."
             : "Não há instruções registradas para o usuário."}
         </p>
       ) : (
         <>
-          {/* Tabela de Instruções */}
           <div style={styles.instructionsTable}>
             <div style={styles.tableHeader}>
               <div style={styles.instructionsCol}>Instruções Clássicas</div>
               <div style={styles.dateCol}>Data Prevista</div>
               <div style={styles.dateCol}>Data de Entrega</div>
               <div style={styles.statusCol}>Situação</div>
-              {user.role === 'ADMIN' && (
-                <div style={styles.actions}>Ações</div>                
+              {user?.role === 'ADMIN' && (
+                <div style={styles.actions}>Ações</div>
               )}
             </div>
             {instructions.map((item) => (
-              <div key={item.id} style={user.role === 'ADMIN' ? styles.instructionRow : styles.instructionRowUser}>
+              <div key={item.id} style={user?.role === 'ADMIN' ? styles.instructionRow : styles.instructionRowUser}>
                 <div style={styles.instructionsCol}>
                   <p style={styles.instructionsColP}>{item.name}</p>
                 </div>
@@ -145,7 +152,7 @@ export default function Instructions() {
                 <div style={styles.statusCol}>
                   <span style={getStatusBadgeClasses(item.status)}>{item.status}</span>
                 </div>
-                {user.role === 'ADMIN' && (
+                {user?.role === 'ADMIN' && (
                   <>
                     <div>
                       <button
@@ -196,4 +203,4 @@ export default function Instructions() {
       </div>
     </div>
   );
-}
+} 
