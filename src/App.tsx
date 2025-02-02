@@ -7,7 +7,6 @@ import InstructionView from "./views/instructions/InstructionsView";
 import CompletionWorksView from "./views/completionWorks/CompletionWorksView";
 import VisitationsView from "./views/visitations/VisitationsView";
 import ReadingsView from "./views/readings/ReadingsView";
-import TaskPage from "./pages/tasks/TaskPage";
 import CreateInstruction from "./pages/tasks/TaskPage";
 import CreateCompletionWork from "./pages/tasks/completionWorks/createCompletionWork/CreateCompletionWork";
 import CreateReading from "./pages/tasks/readings/createReading/CreateReading";
