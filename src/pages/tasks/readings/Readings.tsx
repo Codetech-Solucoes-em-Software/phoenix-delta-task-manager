@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import logoLojas from '../../../assets/logo-lojas-2.png';
-import { styles } from './styles'; 
+import { styles } from './styles';
 import useDocumentTitle from '../../../hooks/PageTitle';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../context/AuthContext';
+import { getReadings } from '../../../services/ReadingsService';
 
 interface Reading {
   id: number;
@@ -18,31 +20,38 @@ interface Reading {
 
 export default function Readings() {
   useDocumentTitle('Leituras Complementares');
-  // Estado para as instruções
-  const [readings, setReadings] = useState<Reading[]>([
-    {
-      id: 1, userId: 1, name: 'O Caiballion', expected_date: '01/01/2001', finished_date: '01/01/2001', status: 'AGUARDANDO',
-      approved_date: ''
-    },
-    {
-      id: 2, userId: 1, name: 'Dogma e Ritual de Alta Magia', expected_date: '01/01/2001', finished_date: '01/01/2001', status: 'REVISAR',
-      approved_date: ''
-    },
-  ]);
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [readings, setReadings] = useState<Reading[]>([]);
 
-  // Função para adicionar uma nova linha de instrução
-  const addInstructionLine = () => {
-    const newId = readings.length > 0 ? readings[readings.length - 1].id + 1 : 1;
-    setReadings([...readings, {
-      id: newId,
-      userId: 1,
-      name: `Resenha da ${newId}°`,
-      expected_date: '',
-      finished_date: '',
-      approved_date: '',
-      status: ''
-    }]);
-  };
+  useEffect(() => {
+    if (!user) return;
+
+    setLoading(true);
+
+    getReadings(user.role, user.id)
+      .then((data: any) => {
+        if (user.role === "ADMIN") {
+          setReadings(Array.isArray(data.classicalLessons) ? data.classicalLessons : []);
+        } else {
+          // Garante que `data.lessonsUser` seja um array ou um array vazio
+          const userInstructions = Array.isArray(data.lessonsUser)
+            ? data.lessonsUser
+            : data.lessonsUser
+              ? [data.lessonsUser]
+              : [];
+
+          setReadings(userInstructions);
+        }
+      })
+      .catch((error) => {
+        console.error("🚨 Erro ao buscar instruções:", error);
+        setReadings([]); // Garante que `instructions` seja sempre um array
+      })
+      .finally(() => setLoading(false));
+  }, [user]);
+
 
   // Função para gerar as classes de status badge
   const getStatusBadgeClasses = (status: string) => {
@@ -57,7 +66,6 @@ export default function Readings() {
         return styles.statusBadge;
     }
   };
-
 
   return (
     <div style={styles.container}>
@@ -111,10 +119,27 @@ export default function Readings() {
       </div>
 
       <div style={styles.buttonContainer}>
-        <button style={styles.addInstructionButton} onClick={addInstructionLine}>Adicionar Instrução</button>
         <li style={styles.addInstructionButton}>
-          <Link to="/admin" style={{ color: 'white', textDecoration: 'none' }}>Voltar</Link>
+          <Link to="/admin" style={{ color: "white", textDecoration: "none" }}>
+            Voltar
+          </Link>
         </li>
+        {user?.role === "ADMIN" && (
+          <li style={styles.addInstructionButton}>
+            <button
+              onClick={() => navigate("/admin/createInstruction")}
+              style={{
+                color: "white",
+                textDecoration: "none",
+                border: "none",
+                background: "transparent",
+                cursor: "pointer",
+              }}
+            >
+              Adicionar Instrução
+            </button>
+          </li>
+        )}
       </div>
     </div>
   );

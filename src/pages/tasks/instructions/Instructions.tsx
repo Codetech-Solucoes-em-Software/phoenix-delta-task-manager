@@ -3,7 +3,7 @@ import logoLojas from "../../../assets/logo-lojas-2.png";
 import { styles } from "./styles";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
-import { getInstructions } from "../../../services/InstructionsService";
+import { deleteInstruction, getInstructions } from "../../../services/InstructionsService";
 import useDocumentTitle from "../../../hooks/PageTitle";
 import { uploadFile } from "../../../services/FileService";
 import { MdEdit, MdDelete } from 'react-icons/md';
@@ -51,6 +51,19 @@ export default function Instructions() {
       })
       .finally(() => setLoading(false));
   }, [user]);
+
+  const handleDelete = async (id: number) => {
+    const confirmDelete = window.confirm("Tem certeza que deseja excluir esta instrução?");
+    if (!confirmDelete) return;
+  
+    const success = await deleteInstruction(id);
+    if (success) {
+      alert("Instrução excluída com sucesso!");
+      setInstructions((prev) => prev.filter((instruction) => instruction.id !== id)); // Atualiza a lista
+    } else {
+      alert("Erro ao excluir instrução.");
+    }
+  };
 
   const getStatusBadgeClasses = (status: string) => {
     switch (status) {
@@ -114,7 +127,8 @@ export default function Instructions() {
             <div style={styles.tableHeader}>
               <div style={styles.instructionsCol}>Instruções Clássicas</div>
               <div style={styles.dateCol}>Data Prevista</div>
-              <div style={styles.dateCol}>Data de Entrega</div>
+              <div style={styles.dateCol}>Data Entrega</div>
+              <div style={styles.dateCol}>Arquivo</div>
               <div style={styles.statusCol}>Situação</div>
               {user?.role === 'ADMIN' && (
                 <div style={styles.actions}>Ações</div>
@@ -149,6 +163,14 @@ export default function Instructions() {
                     style={styles.dateColInput}
                   />
                 </div>
+                <div>
+                  <button
+                    onClick={() => navigate("/admin/createInstruction")}
+                    style={styles.uploadButton}
+                  >
+                    UPLOAD
+                  </button>
+                </div>
                 <div style={styles.statusCol}>
                   <span style={getStatusBadgeClasses(item.status)}>{item.status}</span>
                 </div>
@@ -164,7 +186,7 @@ export default function Instructions() {
                     </div>
                     <div>
                       <button
-                        onClick={() => navigate(`/admin/removeInstruction/${item.id}`)}
+                        onClick={() => handleDelete(item.id)}
                         style={styles.removeInstructionButton}
                       >
                         <MdDelete />
