@@ -56,9 +56,20 @@ const updateInstruction = async (id: number, instruction: Instruction) => {
   }
 };
 
+const deleteInstruction = async (id: number): Promise<boolean> => {
+  try {
+    await api.delete(`/classicalLessons/${id}`);
+    return true;
+  } catch (error: any) {
+    console.error('Ocorreu um erro ao excluir a instrução: ', error);
+    return false;
+  }
+};
+
 export {
   getInstructions,
   createInstruction,
   updateInstruction,
-  getInstructionById
+  getInstructionById,
+  deleteInstruction
 };
