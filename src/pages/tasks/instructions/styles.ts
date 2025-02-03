@@ -43,14 +43,14 @@ export const styles = {
   },
   tableHeader: {
     display: 'grid',
-    gridTemplateColumns: '3fr 1fr 1fr 1fr 1fr',
+    gridTemplateColumns: '1.75fr 0.75fr 0.85fr 0.85fr 0.60fr 0.85fr',
     borderBottom: '1px solid #ccc',
     paddingBottom: '5px',
     fontWeight: 'bold',
   },
   instructionRow: {
     display: 'grid',
-    gridTemplateColumns: '3fr 1fr 1fr 1fr 0.5fr 0.5fr',
+    gridTemplateColumns: '2fr 0.85fr 0.85fr 0.85fr 1fr 0.35fr 0.5fr',
     padding: '10px 0',
   },
   instructionRowUser: {
@@ -115,6 +115,18 @@ export const styles = {
     width: 140,
     backgroundColor: '#e74c3c',
     color: 'white',
+    textAlign: 'center' as 'center'
+  },
+  uploadButton: {
+    padding: '5px' as string,
+    marginTop: '5px' as string,
+    width: 120,
+    height: 35,
+    backgroundColor: '#3498db',
+    color: 'white' as 'white',
+    border: 'none' as 'none',
+    borderRadius: '3px',
+    cursor: 'pointer' as string,
     textAlign: 'center' as 'center'
   },
   addInstructionButton: {
