@@ -4,6 +4,7 @@ export type User = {
   degree?: string;
   lodge?: string;
   email?: string;
+  cim?: string;
   password?: string;
   role?: string;
   token?: string;
