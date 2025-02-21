@@ -24,6 +24,7 @@ const createUser = async (userData:
   {
     name: string;
     email: string;
+    cim: string;
     password: string;
     degree: string;
     lodge: string;
