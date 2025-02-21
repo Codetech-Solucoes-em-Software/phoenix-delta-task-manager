@@ -3,8 +3,7 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
-// import { getUser } from "../../services/UserService";
-import { authenticateUser, generateRefreshToken, generateToken } from "../../services/AuthService";
+import { authenticateUser } from "../../services/AuthService";
 import useDocumentTitle from "../../hooks/PageTitle";
 import MainLogo from '../../assets/logo-lojas-2.png';
 import masonLogo from '../../assets/331d4371a7b3d149e94095a89c372632.jpg';
@@ -14,19 +13,19 @@ export default function Login() {
   useDocumentTitle('Login');
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [email, setEmail] = useState<string>('');
+  const [cim, setCim] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email || !password) {
+    if (!cim || !password) {
       setError('Por favor, preencha todos os campos.');
       return;
     }
 
     try {
-      const data: any = { email, password };
+      const data: any = { cim, password };
       console.log('Dados enviados: ', data);
       const response: any = await authenticateUser(data);
 
@@ -37,12 +36,12 @@ export default function Login() {
         const userAuth: IUserAuth = {
           id: Number(user.id),
           name: user.name,
-          email: user.email,
+          cim: user.cim,
           role: user.role,
           degree: user.degree,
           token: access_token,
         };
-
+        console.log(userAuth);
         login({ user: userAuth });
         const path = user.role === 'ADMIN' ? '/admin' : '/home';
         navigate(path);
@@ -65,7 +64,7 @@ export default function Login() {
           <h1>Login</h1>
           {error && <p style={{ color: 'red' }}>{error}</p>}
           <div>
-            <input type="email" name="email" placeholder="Type your e-mail" onChange={(e) => setEmail(e.target.value)} style={styles.input} />
+            <input type="text" name="email" placeholder="Type your cim" onChange={(e) => setCim(e.target.value)} style={styles.input} />
           </div>
           <div>
             <input type="password" name="" placeholder="Type your password" onChange={(e) => setPassword(e.target.value)} style={styles.input} />
