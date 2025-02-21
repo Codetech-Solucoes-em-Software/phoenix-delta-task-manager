@@ -1,7 +1,6 @@
 /* eslint-disable import/no-anonymous-default-export */
 import api from './Api';
 import { getAllUsers } from './UserService';
-import { getUserByEmail } from './UserService';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const TOKEN_EXPIRATION_TIME = 60 * 60 * 1000;
 
@@ -10,12 +9,12 @@ interface AuthResponse {
 }
 
 
-const generateToken = (email: string): string => {
-  return `${email}-${Math.random().toString(36).substr(2, 9)}`;
+const generateToken = (cim: string): string => {
+  return `${cim}-${Math.random().toString(36).substr(2, 9)}`;
 };
 
-const generateRefreshToken = (email: string): string => {
-  return `${email}-refresh-${Math.random().toString(36).substr(2, 9)}`;
+const generateRefreshToken = (cim: string): string => {
+  return `${cim}-refresh-${Math.random().toString(36).substr(2, 9)}`;
 };
 
 const authenticateUser = async (data: any): Promise<AuthResponse> => {
