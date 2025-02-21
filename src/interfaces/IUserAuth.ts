@@ -1,7 +1,7 @@
 export interface IUserAuth {
   id: number;
   name: string;
-  email: string;
+  cim: string;
   degree: string;
   role: string;
   token?: string;
