@@ -17,6 +17,7 @@ export default function Register() {
   // Estados para os campos do formulário
   const [name, setName] = useState("");
   const [degree, setDegree] = useState("");
+  const [cim, setCim] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [lodge, setLodge] = useState<"phoenix" | "delta">("phoenix");
@@ -26,16 +27,16 @@ export default function Register() {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault(); // Evita recarregar a página
 
-    if (!name || !degree || !email || !password) {
+    if (!name || !degree || !cim|| !password) {
       setError("Por favor, preencha todos os campos.");
       return;
     }
 
     try {
       // Chama a API para registrar o usuário
-      await createUser({ name, degree, email, password, lodge, role });
+      await createUser({ name, email, cim, password, degree, lodge, role });
 
-      const userData = { email, password };
+      const userData = { cim, password };
 
       // Autentica o usuário após o cadastro
       const authenticatedUser = await authenticateUser(userData);
@@ -48,7 +49,7 @@ export default function Register() {
       const userAuth: IUserAuth = {
         id: authenticatedUser.access_token.user.id,
         name: authenticatedUser.access_token.user.name,
-        email: authenticatedUser.access_token.user.email,
+        cim: authenticatedUser.access_token.user.cim,
         role: authenticatedUser.access_token.user.role,
         degree: authenticatedUser.access_token.user.degree,
         token: authenticatedUser.access_token.access_token,
@@ -96,6 +97,14 @@ export default function Register() {
             placeholder="Digite seu e-mail"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            style={styles.input}
+            required
+          />
+          <input
+            type="text"
+            placeholder="Digite seu cim"
+            value={cim}
+            onChange={(e) => setCim(e.target.value)}
             style={styles.input}
             required
           />
