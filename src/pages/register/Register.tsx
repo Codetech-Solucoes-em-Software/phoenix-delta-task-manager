@@ -48,6 +48,7 @@ export default function Register() {
 
       const userAuth: IUserAuth = {
         id: authenticatedUser.access_token.user.id,
+        lodge_id: authenticatedUser.access_token.user.lodge_id,
         name: authenticatedUser.access_token.user.name,
         cim: authenticatedUser.access_token.user.cim,
         role: authenticatedUser.access_token.user.role,
