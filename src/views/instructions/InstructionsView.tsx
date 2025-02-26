@@ -1,4 +1,4 @@
-import Instructions from '../../pages/tasks/instructions/Instructions';
+import Instructions from '../../pages/tasks/requirements/Instructions';
 
 
 export default function InstructionView() {

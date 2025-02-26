@@ -5,23 +5,24 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import { deleteInstruction, getInstructions } from "../../../services/InstructionsService";
 import useDocumentTitle from "../../../hooks/PageTitle";
-import { uploadFile } from "../../../services/FileService";
 import { MdEdit, MdDelete } from 'react-icons/md';
 
-interface Instruction {
+interface Requirement{
   id: number;
-  userid: number;
+  store_id: number;
   name: string;
   expected_date: string;
   finished_date: string;
+  approved_date: string;
+  has_voucher: boolean;
   status: string;
 }
 
 export default function Instructions() {
-  useDocumentTitle("Instruções Clássicas");
+  useDocumentTitle("Requisitos");
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [instructions, setInstructions] = useState<Instruction[]>([]);
+  const [requirements, setRequirements] = useState<Requirement[]>([]);
   const [loading, setLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -33,21 +34,21 @@ export default function Instructions() {
     getInstructions(user.role, user.id)
       .then((data: any) => {
         if (user.role === "ADMIN") {
-          setInstructions(Array.isArray(data.classicalLessons) ? data.classicalLessons : []);
+          setRequirements(Array.isArray(data.classicalLessons) ? data.classicalLessons : []);
         } else {
           // Garante que `data.lessonsUser` seja um array ou um array vazio
-          const userInstructions = Array.isArray(data.lessonsUser)
+          const userRequirements = Array.isArray(data.lessonsUser)
             ? data.lessonsUser
             : data.lessonsUser
               ? [data.lessonsUser]
               : [];
 
-          setInstructions(userInstructions);
+          setRequirements(userRequirements);
         }
       })
       .catch((error) => {
         console.error("🚨 Erro ao buscar instruções:", error);
-        setInstructions([]); // Garante que `instructions` seja sempre um array
+        setRequirements([]); // Garante que `instructions` seja sempre um array
       })
       .finally(() => setLoading(false));
   }, [user]);
@@ -59,7 +60,7 @@ export default function Instructions() {
     const success = await deleteInstruction(id);
     if (success) {
       alert("Instrução excluída com sucesso!");
-      setInstructions((prev) => prev.filter((instruction) => instruction.id !== id)); // Atualiza a lista
+      setRequirements((prev) => prev.filter((instruction) => instruction.id !== id)); // Atualiza a lista
     } else {
       alert("Erro ao excluir instrução.");
     }
@@ -115,7 +116,7 @@ export default function Instructions() {
         <p style={{ textAlign: "center", marginTop: 20 }}>
           Carregando instruções...
         </p>
-      ) : instructions.length === 0 ? (
+      ) : requirements.length === 0 ? (
         <p style={{ textAlign: "center", marginTop: 20 }}>
           {user?.role === "ADMIN"
             ? "Nenhuma instrução encontrada."
@@ -134,7 +135,7 @@ export default function Instructions() {
                 <div style={styles.actions}>Ações</div>
               )}
             </div>
-            {instructions.map((item) => (
+            {requirements.map((item) => (
               <div key={item.id} style={user?.role === 'ADMIN' ? styles.instructionRow : styles.instructionRowUser}>
                 <div style={styles.instructionsCol}>
                   <p style={styles.instructionsColP}>{item.name}</p>
@@ -218,7 +219,7 @@ export default function Instructions() {
                 cursor: "pointer",
               }}
             >
-              Adicionar Instrução
+              Adicionar Requisito 
             </button>
           </li>
         )}
