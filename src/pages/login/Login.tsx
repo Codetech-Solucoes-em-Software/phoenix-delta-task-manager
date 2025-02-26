@@ -35,6 +35,7 @@ export default function Login() {
         const { access_token, user }: any = response.access_token;
         const userAuth: IUserAuth = {
           id: Number(user.id),
+          lodge_id: Number(user.lodge_id),
           name: user.name,
           cim: user.cim,
           role: user.role,
