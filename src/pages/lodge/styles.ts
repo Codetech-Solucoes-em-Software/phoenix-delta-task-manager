@@ -194,12 +194,28 @@ export const styles = {
     gap: 15
   },
   filterContainer: {
-
+    display: 'flex',
+    gap: 15
   },
   filterButton: {
-
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 180,
+    height: 30,
+    border: 'none',
+    borderRadius: 6,
+    cursor: 'pointer'
   },
   activeFilterButton: {
-
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 180,
+    height: 30,
+    border: 'none',
+    borderRadius: 6,
+    cursor: 'pointer',
+    backgroundColor: '#ccc'
   }
 };
