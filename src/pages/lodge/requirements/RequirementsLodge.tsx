@@ -12,14 +12,16 @@ interface LodgeRequirementsProps {
 interface Requirement {
   id: number;
   lodge_id: number; // Corrigido de store_id para lodge_id
-  name: string;
-  expected_date: string;
-  approved_date: string;
   status: string;
   is_voucher: boolean;
   user: {
     id: number;
     name: string;
+  },
+  requirements: {
+    name: string;
+    expected_date: string;
+    approved_date: string;
   }
 }
 
@@ -87,10 +89,10 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
           </div>
           {requirements.map((item) => (
             <div key={`${item.id}-${item.lodge_id}`} style={styles.requirementsRow}>
-              <div style={styles.requirementsCol}>{item.name}</div>
+              <div style={styles.requirementsCol}>{item.requirements.name}</div>
               <div style={styles.requirementsCol}>{item.user.name}</div>
-              <div style={styles.dateCol}>{new Date(item.expected_date).toLocaleDateString()}</div>
-              <div style={styles.dateCol}>{item.approved_date ? new Date(item.approved_date).toLocaleDateString() : ""}</div>
+              <div style={styles.dateCol}>{new Date(item.requirements.expected_date).toLocaleDateString()}</div>
+              <div style={styles.dateCol}>{item.requirements.approved_date ? new Date(item.requirements.approved_date).toLocaleDateString() : ""}</div>
               <div style={{ ...styles.statusCol, color: getStatusColor(item.status)}}>
                 {item.status}                
               </div>
