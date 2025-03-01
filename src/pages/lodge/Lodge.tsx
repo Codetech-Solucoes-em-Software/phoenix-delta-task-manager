@@ -7,7 +7,7 @@ import { styles } from "./styles";
 export default function Lodge() {
   useDocumentTitle("Menu da Loja");
   const { user } = useAuth();
-  const [filter, setFilter] = useState<"user" | "date">("user");
+  const [filter, setFilter] = useState<"user" | "expected_date">("user");
 
   return (
     <div style={styles.container}>
@@ -40,7 +40,14 @@ export default function Lodge() {
         </div>
       </div>
 
-      <div>
+      <div style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        marginBottom: 20,
+        marginTop: 15,
+        gap: 10
+      }}>
         <h2>Requisitos da Loja</h2>
         <div style={styles.filterContainer}>
           <button 
@@ -50,16 +57,14 @@ export default function Lodge() {
             Por Usuário
           </button>
           <button 
-            onClick={() => setFilter("date")} 
-            style={filter === "date" ? styles.activeFilterButton : styles.filterButton}
+            onClick={() => setFilter("expected_date")} 
+            style={filter === "expected_date" ? styles.activeFilterButton : styles.filterButton}
           >
             Por Data de Entrega
           </button>
         </div>
-
-        {/* Passa o filtro como prop para LodgeRequirements */}
-        <LodgeRequirements filter={filter} />
       </div>
+      <LodgeRequirements filter={filter} />
     </div>
   );
 }
