@@ -8,6 +8,7 @@ export default function Lodge() {
   useDocumentTitle("Menu da Loja");
   const { user } = useAuth();
   const [filter, setFilter] = useState<"user" | "expected_date">("user");
+  console.log(filter);
 
   return (
     <div style={styles.container}>
