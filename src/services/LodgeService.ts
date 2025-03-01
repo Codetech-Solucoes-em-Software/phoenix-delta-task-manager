@@ -1,10 +1,10 @@
 import api from "./Api"
 
-const getRequirements = async (lodge_id: number, order: string) => {
+const getRequirements = async (lodge_id: number, filter: string) => {
   try {
     const response = await api.get(`/lodges/requirements/${lodge_id}`, {
       params: {
-        order: order
+        order: filter 
       }
     });
     return response.data;
