@@ -4,6 +4,7 @@ import useDocumentTitle from "../../../hooks/PageTitle";
 import { useEffect, useState } from "react";
 import { styles } from "./styles";
 import { getRequirements } from "../../../services/LodgeService";
+import DownloadModal from "../../../components/modalDownload/DownloadModal";
 
 interface LodgeRequirementsProps {
   filter: "user" | "expected_date";
@@ -32,6 +33,9 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
   const navigate = useNavigate();
   const [requirements, setRequirements] = useState<Requirement[]>([]);
   const [loading, setLoading] = useState(false);
+  const [selectedRequirementId, setSelectedRequirementId] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   useEffect(() => {
     if (!user || !user.lodge_id) return;
@@ -44,7 +48,7 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
         }
         const data: any = await getRequirements(user.lodge_id, filter);
         console.log(data);
-        const formattedData = Array.isArray(data) ? data : [data]; 
+        const formattedData = Array.isArray(data) ? data : [data];
         console.log(formattedData)
         // Verifica se a resposta é um array, se não, define como um array vazio
         setRequirements(formattedData);
@@ -59,7 +63,7 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
   }, [user, filter]);
 
   const getStatusColor = (status: string) => {
-    switch(status) {
+    switch (status) {
       case "PENDENTE":
         return "red";
       case "ENTREGUE":
@@ -96,19 +100,25 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
               <div style={styles.requirementsCol}>{item.user.name}</div>
               <div style={styles.dateCol}>{new Date(item.requirements.expected_date).toLocaleDateString()}</div>
               <div style={styles.dateCol}>{item.requirements.approved_date ? new Date(item.requirements.approved_date).toLocaleDateString() : ""}</div>
-              <div style={{ ...styles.statusCol, color: getStatusColor(item.status)}}>
-                {item.status}                
+              <div style={{ ...styles.statusCol, color: getStatusColor(item.status) }}>
+                {item.status}
               </div>
               {/* Exibe o botão "Download" com estilo condicional */}
               <div style={styles.requirementsCol}>
                 <button
                   style={{
                     ...styles.downloadButton,
-                    opacity: item.is_voucher ? 1 : 0.5, // Opacidade reduzida se não tiver voucher
-                    cursor: item.is_voucher ? 'pointer' : 'not-allowed',
-                    textAlign: 'center' // Cursor para indicar se está desabilitado
+                    opacity: item.is_voucher ? 1 : 0.5,
+                    cursor: item.is_voucher ? 'pointer' as 'pointer' : 'not-allowed' as 'not-allowed',
+                    textAlign: "center" as "center"
                   }}
-                  disabled={!item.is_voucher} // Desabilita o botão se não houver voucher
+                  disabled={!item.is_voucher}
+                  onClick={() => {
+                    if (item.is_voucher) {
+                      setSelectedRequirementId(item.id);
+                      setIsModalOpen(true);
+                    }
+                  }}
                 >
                   Download
                 </button>
@@ -116,6 +126,14 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
               <div>{item.requirements.requirements_type}</div>
             </div>
           ))}
+          {/* Aqui é onde o modal será renderizado */}
+          {isModalOpen && selectedRequirementId && (
+            <DownloadModal
+              isOpen={isModalOpen}
+              onClose={() => setIsModalOpen(false)}
+              requirementId={selectedRequirementId}
+            />
+          )}
         </div>
       )}
     </div>
