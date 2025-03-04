@@ -22,6 +22,7 @@ interface Requirement {
     name: string;
     expected_date: string;
     approved_date: string;
+    requirements_type: string;
   }
 }
 
@@ -86,6 +87,8 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
             <div style={styles.dateCol}>Data Prevista</div>
             <div style={styles.dateCol}>Data Entrega</div>
             <div style={styles.statusCol}>Situação</div>
+            <div style={styles.requirementsCol}>Comprovante</div>
+            <div style={styles.requirementsCol}>Grau</div>
           </div>
           {requirements.map((item) => (
             <div key={`${item.id}-${item.lodge_id}`} style={styles.requirementsRow}>
@@ -96,6 +99,21 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
               <div style={{ ...styles.statusCol, color: getStatusColor(item.status)}}>
                 {item.status}                
               </div>
+              {/* Exibe o botão "Download" com estilo condicional */}
+              <div style={styles.requirementsCol}>
+                <button
+                  style={{
+                    ...styles.downloadButton,
+                    opacity: item.is_voucher ? 1 : 0.5, // Opacidade reduzida se não tiver voucher
+                    cursor: item.is_voucher ? 'pointer' : 'not-allowed',
+                    textAlign: 'center' // Cursor para indicar se está desabilitado
+                  }}
+                  disabled={!item.is_voucher} // Desabilita o botão se não houver voucher
+                >
+                  Download
+                </button>
+              </div>
+              <div>{item.requirements.requirements_type}</div>
             </div>
           ))}
         </div>
