@@ -1,0 +1,41 @@
+export const styles = {
+  overlay: {
+    position: "fixed" as "fixed",
+    top: 0,
+    left: 0,
+    width: "100%" as string,
+    height: "100%" as string,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    display: "flex" as "flex",
+    justifyContent: "center" as "center",
+    alignItems: "center" as "center",
+    zIndex: 1000,
+  },
+  modal: {
+    backgroundColor: "white" as "white",
+    padding: "20px",
+    borderRadius: "8px",
+    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+    textAlign: "center" as "center",
+  },
+  buttonContainer: {
+    marginTop: "20px",
+    display: "flex" as "flex",
+    justifyContent: "space-between",
+  },
+  cancelButton: {
+    backgroundColor: "#ccc",
+    padding: "10px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+  },
+  downloadButton: {
+    backgroundColor: "#007bff",
+    color: "white",
+    padding: "10px",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+  },
+};

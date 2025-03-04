@@ -17,6 +17,9 @@ const uploadFile = async (file: File, userId: number) => {
   }
 };
 
+const downloadVoucher = async (requirementId: number) => {}
+
 export {
-  uploadFile
+  uploadFile,
+  downloadVoucher
 };
