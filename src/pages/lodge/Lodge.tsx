@@ -3,15 +3,19 @@ import { useAuth } from "../../context/AuthContext";
 import useDocumentTitle from "../../hooks/PageTitle";
 import LodgeRequirements from "./requirements/RequirementsLodge";
 import { styles } from "./styles";
+import { CgLogOff } from "react-icons/cg";
 
 export default function Lodge() {
   useDocumentTitle("Menu da Loja");
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const [filter, setFilter] = useState<"user" | "expected_date">("user");
   console.log(filter);
 
   return (
     <div style={styles.container}>
+      <div style={styles.logoutButtonContainer}>
+        <button onClick={logout} style={styles.logoutButton}>{<CgLogOff style={styles.iconButton} />}</button>
+      </div>
       <div style={styles.header}>
         <h1 style={styles.headerTitle}>Administração da Loja</h1>
         <div style={styles.headerInfo}>
