@@ -1,21 +1,18 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import useDocumentTitle from "../../hooks/PageTitle";
-import LodgeRequirements from "./requirements/RequirementsLodge";
+import UserRequirements from "../user/requirements/UserRequirements";
 import { styles } from "./styles";
-import { CgLogOff } from "react-icons/cg";
 
 export default function Lodge() {
-  useDocumentTitle("Menu da Loja");
+  useDocumentTitle("Requisitos");
   const { user, logout } = useAuth();
-  const [filter, setFilter] = useState<"user" | "expected_date">("user");
+  const [filter, setFilter] = useState<"user" | "expected_date">("expected_date");
   console.log(filter);
 
   return (
     <div style={styles.container}>
-      <div style={styles.logoutButtonContainer}>
-        <button onClick={logout} style={styles.logoutButton}>{<CgLogOff style={styles.iconButton} />}</button>
-      </div>
+      <button onClick={logout} style={styles.logoutButton}>Logout</button>
       <div style={styles.header}>
         <h1 style={styles.headerTitle}>Administração da Loja</h1>
         <div style={styles.headerInfo}>
@@ -69,7 +66,7 @@ export default function Lodge() {
           </button>
         </div>
       </div>
-      <LodgeRequirements filter={filter} />
+      <UserRequirements filter={filter} />
     </div>
   );
 }
