@@ -1,19 +1,19 @@
 import api from "./Api";
 
-const uploadFile = async (file: File, userId: number) => {
-  const formData = new FormData();
-  formData.append('file', file);  // Adiciona o arquivo ao FormData
-
+const uploadFile = async (file: FormData, userId: number) => {
   try {
-    const response = await api.post(`/upload/${userId}`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data', // Especificando o tipo de conteúdo
-      },
+    const response = await api.post(`/api/upload/${userId}`, {
+      body: file,
     });
-    return response.data; // Retorna os dados da resposta, caso necessário
+
+    if (!response) {
+      throw new Error("Erro ao enviar arquivo");
+    }
+
+    return response.data;
   } catch (error) {
-    console.error('Erro ao enviar o arquivo:', error);
-    throw error; // Propaga o erro caso ocorra
+    console.error(error);
+    throw error;
   }
 };
 
