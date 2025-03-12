@@ -1,9 +1,11 @@
 import api from "./Api";
 
-const uploadFile = async (file: FormData, userId: number) => {
+const uploadFile = async (formData: FormData, userRequirementId: number) => {
   try {
-    const response = await api.post(`/api/upload/${userId}`, {
-      body: file,
+    const response = await api.post(`/vouchers/upload/${userRequirementId}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
 
     if (!response) {
@@ -17,9 +19,15 @@ const uploadFile = async (file: FormData, userId: number) => {
   }
 };
 
-const downloadVoucher = async (requirementId: number) => {}
-
-export {
-  uploadFile,
-  downloadVoucher
+const downloadVoucher = async (requirementId: number) => {
+  try {
+    const response = await api.get(`/vouchers/download/${requirementId}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(
+      "Ocorreu um erro ao selecionar o arquivo para download: " + error
+    );
+  }
 };
+
+export { uploadFile, downloadVoucher };
