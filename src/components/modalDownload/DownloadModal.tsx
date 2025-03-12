@@ -10,6 +10,7 @@ interface DownloadModalProps {
 
 const DownloadModal = ({ isOpen, onClose, requirementId }: DownloadModalProps) => {
   const [isDownloading, setIsDownloading] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleDownload = async () => {
     setIsDownloading(true);
@@ -34,7 +35,13 @@ const DownloadModal = ({ isOpen, onClose, requirementId }: DownloadModalProps) =
           <button style={styles.cancelButton} onClick={onClose} disabled={isDownloading}>
             Cancelar
           </button>
-          <button style={styles.downloadButton} onClick={handleDownload} disabled={isDownloading}>
+          <button style={{
+            ...styles.downloadButton,
+            backgroundColor: isHovered ? 'blue' : '#007bff'
+          }} onClick={handleDownload} 
+             onMouseEnter={() => setIsHovered(true)}
+             onMouseLeave={() => setIsHovered(false)}
+              disabled={isDownloading}>
             {isDownloading ? "Baixando..." : "Baixar Comprovante"}
           </button>
         </div>
