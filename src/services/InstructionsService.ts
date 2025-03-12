@@ -66,10 +66,20 @@ const deleteInstruction = async (id: number): Promise<boolean> => {
   }
 };
 
+const getUserRequirements = async (user_id: number) => {
+  try {
+    const response = await api.get(`/userRequirements/${user_id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error("Ocorreu um erro ao listar as informações do usuário no cliente :" + error);
+  }
+}
+
 export {
   getInstructions,
   createInstruction,
   updateInstruction,
   getInstructionById,
-  deleteInstruction
+  deleteInstruction,
+  getUserRequirements
 };
