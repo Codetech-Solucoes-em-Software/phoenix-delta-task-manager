@@ -1,5 +1,5 @@
-import UserRequirements from "../../pages/user/requirements/UserRequirements";
+import User from "../../pages/user/User";
 
 export default function UserView() {
-  return <UserRequirements filter="expected_date" />
+  return <User /> 
 }
