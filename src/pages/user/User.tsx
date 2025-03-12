@@ -3,22 +3,23 @@ import { useAuth } from "../../context/AuthContext";
 import useDocumentTitle from "../../hooks/PageTitle";
 import UserRequirements from "../user/requirements/UserRequirements";
 import { styles } from "./styles";
+import { CgLogOff } from "react-icons/cg";
+import React from "react";
 
-export default function Lodge() {
+export default function User() {
   useDocumentTitle("Requisitos");
   const { user, logout } = useAuth();
-  const [filter, setFilter] = useState<"user" | "expected_date">("expected_date");
+  const [filter, setFilter] = useState<"expected_date">("expected_date");
   console.log(filter);
 
   return (
     <div style={styles.container}>
-      <button onClick={logout} style={styles.logoutButton}>Logout</button>
+      <div style={styles.logoutButtonContainer}>
+        <button onClick={logout} style={styles.logoutButton}>{<CgLogOff style={styles.iconButton} />}</button>
+      </div>
       <div style={styles.header}>
-        <h1 style={styles.headerTitle}>Administração da Loja</h1>
+        <h3 style={styles.headerTitle}>Informações do Usuário</h3>
         <div style={styles.headerInfo}>
-          <div style={styles.headerTitInfo}>
-            <h5>Identificação do Administrador:</h5>
-          </div>
           <div style={styles.inputContainer}>
             <div style={styles.inputGroup}>
               <label style={styles.inputGroupLabel}>Nome:</label>
@@ -50,22 +51,8 @@ export default function Lodge() {
         marginTop: 15,
         gap: 10
       }}>
-        <h2>Requisitos da Loja</h2>
-        <div style={styles.filterContainer}>
-          <button 
-            onClick={() => setFilter("user")} 
-            style={filter === "user" ? styles.activeFilterButton : styles.filterButton}
-          >
-            Por Usuário
-          </button>
-          <button 
-            onClick={() => setFilter("expected_date")} 
-            style={filter === "expected_date" ? styles.activeFilterButton : styles.filterButton}
-          >
-            Por Data de Entrega
-          </button>
-        </div>
-      </div>
+        <h4>Requisitos da Loja</h4>
+     </div>
       <UserRequirements filter={filter} />
     </div>
   );
