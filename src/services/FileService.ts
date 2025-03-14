@@ -1,8 +1,11 @@
 import api from "./Api";
 
-const uploadFile = async (formData: FormData, userRequirementId: number) => {
+const uploadFile = async (formData: FormData, userRequirementId: number, userId: number) => {
   try {
     const response = await api.post(`/vouchers/upload/${userRequirementId}`, formData, {
+      params: {
+        user_id: userId
+      },
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -19,14 +22,22 @@ const uploadFile = async (formData: FormData, userRequirementId: number) => {
   }
 };
 
-const downloadVoucher = async (requirementId: number) => {
+const downloadVoucher = async (voucherId: number) => {
   try {
-    const response = await api.get(`/vouchers/download/${requirementId}`);
-    return response.data;
+    const response: any = await api.get(`/vouchers/download/${voucherId}`, {
+      responseType: "blob",
+    });
+
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `comprovante-${voucherId}.pdf`); // Ajuste a extensão conforme necessário
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   } catch (error) {
-    throw new Error(
-      "Ocorreu um erro ao selecionar o arquivo para download: " + error
-    );
+    console.error("Erro ao baixar comprovante:", error);
+    throw error;
   }
 };
 
