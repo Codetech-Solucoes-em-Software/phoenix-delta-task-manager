@@ -56,7 +56,7 @@ const UploadModal = ({ isOpen, onClose, requirementId }: UploadModalProps) => {
       formData.append("file", file);
       formData.append("requirementId", String(requirementId));
   
-      await uploadFile(formData, requirementId);
+      await uploadFile(formData, requirementId, user.id);
       await updateRequirementStatus(requirementId);
       alert("Arquivo enviado com sucesso!");
       onClose();
