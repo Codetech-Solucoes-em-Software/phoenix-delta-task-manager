@@ -218,9 +218,23 @@ export const styles = {
     cursor: 'pointer',
     backgroundColor: '#ccc'
   },
+  logoutButtonContainer: {
+    display: "flex" as "flex",
+    justifyContent: "flex-end" as "flex-end"
+  },
   logoutButton: {
-    width: 200,
+    display: "flex" as "flex",
+    alignItems: "center" as "center",
+    width: 40,
+    height: 40,
+    textAlign: "center" as "center",
+    border: "none" as "none",
+    borderRadius: "50%" as string,
+    backgroundColor: "#e11b0e" as string
+  },
+  iconButton: {
+    width: 35,
     height: 35,
-    textAlign: "center" as "center"
+    cursor: "pointer" as "pointer"
   }
 };

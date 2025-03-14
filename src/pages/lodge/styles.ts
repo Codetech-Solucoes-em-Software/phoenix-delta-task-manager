@@ -1,3 +1,5 @@
+import { hover } from "@testing-library/user-event/dist/hover"
+
 export const styles = {
   container: {
     fontFamily: 'sans-serif' as 'sans-serif',
@@ -215,8 +217,8 @@ export const styles = {
     height: 30,
     border: 'none',
     borderRadius: 6,
-    cursor: 'pointer',
-    backgroundColor: '#ccc'
+    cursor: 'pointer' as 'pointer',
+    backgroundColor: '#ccc' as string
   },
   logoutButtonContainer: {
     display: "flex" as "flex",
@@ -230,7 +232,7 @@ export const styles = {
     textAlign: "center" as "center",
     border: "none" as "none",
     borderRadius: "50%" as string,
-    backgroundColor: "e11b0e" as string
+    backgroundColor: "#e11b0e" as string
   },
   iconButton: {
     width: 35,

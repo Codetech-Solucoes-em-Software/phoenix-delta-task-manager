@@ -5,6 +5,8 @@ import LodgeRequirements from "./requirements/RequirementsLodge";
 import { styles } from "./styles";
 import { CgLogOff } from "react-icons/cg";
 
+//const LogOffIcon = CgLogOff as unknown as () => JSX.Element;
+
 export default function Lodge() {
   useDocumentTitle("Menu da Loja");
   const { user, logout } = useAuth();
@@ -14,7 +16,7 @@ export default function Lodge() {
   return (
     <div style={styles.container}>
       <div style={styles.logoutButtonContainer}>
-        <button onClick={logout} style={styles.logoutButton}>{<CgLogOff style={styles.iconButton} />}</button>
+        <button onClick={logout} style={styles.logoutButton}><CgLogOff style={styles.iconButton} /></button>
       </div>
       <div style={styles.header}>
         <h1 style={styles.headerTitle}>Administração da Loja</h1>

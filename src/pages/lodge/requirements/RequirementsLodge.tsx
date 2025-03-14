@@ -12,9 +12,10 @@ interface LodgeRequirementsProps {
 
 interface Requirement {
   id: number;
-  lodge_id: number; // Corrigido de store_id para lodge_id
+  lodge_id: number;
   status: string;
   is_voucher: boolean;
+  voucher_id: number;
   user: {
     id: number;
     name: string;
@@ -33,8 +34,11 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
   const navigate = useNavigate();
   const [requirements, setRequirements] = useState<Requirement[]>([]);
   const [loading, setLoading] = useState(false);
-  const [selectedRequirementId, setSelectedRequirementId] = useState<number | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
+  const [selectedDownloadRequirementId, setSelectedDownloadRequirementId] = useState<number | null>(null);
+  const [selectedVoucherId, setSelectedVoucherId] = useState<number | null>(null);
+
+
 
 
   useEffect(() => {
@@ -104,34 +108,40 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
                 {item.status}
               </div>
               {/* Exibe o botão "Download" com estilo condicional */}
+              {/* Botão para Download do Comprovante */}
               <div style={styles.requirementsCol}>
-                <button
-                  style={{
-                    ...styles.downloadButton,
-                    opacity: item.is_voucher ? 1 : 0.5,
-                    cursor: item.is_voucher ? 'pointer' as 'pointer' : 'not-allowed' as 'not-allowed',
-                    textAlign: "center" as "center"
-                  }}
-                  disabled={!item.is_voucher}
-                  onClick={() => {
-                    if (item.is_voucher) {
-                      setSelectedRequirementId(item.id);
-                      setIsModalOpen(true);
-                    }
-                  }}
-                >
-                  Download
-                </button>
+                {item.status === "ENTREGUE" && item.voucher_id ? (
+                  <button
+                    style={{
+                      ...styles.downloadButton,
+                      opacity: 1,
+                      cursor: "pointer",
+                      backgroundColor: "#007bff",
+                      color: "white",
+                      textAlign: 'center'
+                    }}
+                    onClick={() => {
+                      setSelectedDownloadRequirementId(item.id);
+                      setSelectedVoucherId(item.voucher_id);
+                      setIsDownloadModalOpen(true);
+                    }}
+                  >
+                    Download
+                  </button>
+                ) : (
+                  <span style={{ color: "#888" }}>Sem comprovante</span>
+                )}
               </div>
               <div>{item.requirements.requirements_type}</div>
             </div>
           ))}
           {/* Aqui é onde o modal será renderizado */}
-          {isModalOpen && selectedRequirementId && (
+          {isDownloadModalOpen &&
+          selectedVoucherId && selectedDownloadRequirementId && (
             <DownloadModal
-              isOpen={isModalOpen}
-              onClose={() => setIsModalOpen(false)}
-              requirementId={selectedRequirementId}
+              isOpen={isDownloadModalOpen}
+              onClose={() => setIsDownloadModalOpen(false)}
+              voucher_id={selectedVoucherId}
             />
           )}
         </div>

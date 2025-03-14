@@ -65,6 +65,20 @@ const userExists = async (email: string): Promise<boolean> => {
 
 const getLoggedInUser = () => {};
 
+const updateRequirementStatus = async (userRequirementId: number) => {
+  try {
+    const response = await api.put(`/userRequirements/${userRequirementId}`, {
+      finished_date: new Date().toISOString(),
+      status: "ENTREGUE",
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Erro ao atualizar status do requisito:", error);
+    throw error;
+  }
+};
+
 
 export {
   getAllUsers,
@@ -73,5 +87,6 @@ export {
   // updateUser,
   // deleteUser,
   getLoggedInUser,
-  userExists
+  userExists,
+  updateRequirementStatus
 };

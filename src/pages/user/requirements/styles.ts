@@ -36,5 +36,6 @@ export const styles = {
     fontSize: "14px",
     transition: "0.3s",
     cursor: "pointer",
+    width: 110
   },
 }
