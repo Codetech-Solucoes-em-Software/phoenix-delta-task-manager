@@ -15,6 +15,7 @@ export const styles: { [key: string]: CSSProperties } = {
   },
   modal: {
     display: 'flex' as 'flex',
+    flexDirection: 'column' as 'column',
     justifyContent: 'center' as 'center',
     alignItems: 'center' as 'center',
     backgroundColor: "white",
@@ -49,18 +50,16 @@ export const styles: { [key: string]: CSSProperties } = {
     width: 100,
     height: 35,
     border: "none",
-    borderRadius: "6px",
-    backgroundColor: "#007bff",
+    borderRadius: 6,
     color: "white",
-    cursor: "pointer"
+    cursor: "pointer",
   },
-  buttonExit: {
+  cancelButton: {
     width: 100,
     height: 35,
     border: "none",
-    borderRadius: "6px",
-    backgroundColor: "red",
+    borderRadius: 6,
     color: "white",
-    cursor: "pointer"
+    cursor: "pointer",
   }
 };
