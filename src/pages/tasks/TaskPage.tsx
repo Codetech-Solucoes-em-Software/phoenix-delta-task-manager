@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createInstruction } from '../../services/InstructionsService';
@@ -38,7 +37,7 @@ export default function CreateInstruction() {
       }
     }
     fetchUsers();
-  }, []);
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
