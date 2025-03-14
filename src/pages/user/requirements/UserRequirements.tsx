@@ -32,6 +32,7 @@ export default function UserRequirements({ filter }: LodgeRequirementsProps) {
   const navigate = useNavigate();
   const [userRequirements, setUserRequirements] = useState<UserRequirement[]>([]);
   const [loading, setLoading] = useState(false);
+  
   const [selectedRequirementId, setSelectedRequirementId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
