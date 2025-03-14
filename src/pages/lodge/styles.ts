@@ -1,5 +1,3 @@
-import { hover } from "@testing-library/user-event/dist/hover"
-
 export const styles = {
   container: {
     fontFamily: 'sans-serif' as 'sans-serif',

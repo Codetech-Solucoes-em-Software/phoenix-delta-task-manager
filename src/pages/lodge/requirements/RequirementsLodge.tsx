@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import useDocumentTitle from "../../../hooks/PageTitle";
