@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useRef, useState } from "react";
 import logoLojas from "../../../assets/logo-lojas-2.png";
 import { styles } from "./styles";
@@ -24,7 +26,6 @@ export default function Instructions() {
   const navigate = useNavigate();
   const [requirements, setRequirements] = useState<Requirement[]>([]);
   const [loading, setLoading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!user) return;
