@@ -6,16 +6,21 @@ export const styles = {
   requirementsCol: {
 
   },
-  dateCol: {},
+  dateCol: {
+    display: 'flex',
+    justifyContent: 'center' as 'center',
+    alignItems: 'flex-end' 
+  },
   
   requirementsRow: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr',
-    marginTop: 15
+    gridTemplateColumns: '1.5fr 1.5fr 1fr 1fr 1fr 1fr 1fr',
+    marginTop: 15,
+    alignItems: 'center'
   },
   tableHeader: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr',
+    gridTemplateColumns: '1.5fr 1.5fr 1fr 1fr 1fr 1fr 1fr',
     borderBottom: '1px solid #ccc',
     paddingBottom: '5px',
     fontWeight: 'bold',
@@ -37,4 +42,9 @@ export const styles = {
     cursor: "pointer",
     transition: "background-color 0.3s",
   },
+  userContainer: {
+    backgrounndColor: '#ccc',
+    border: 'none' as 'none',
+    borderRadius: 6
+  }
 }
