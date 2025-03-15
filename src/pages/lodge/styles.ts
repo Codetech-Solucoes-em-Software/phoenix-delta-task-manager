@@ -1,7 +1,7 @@
 export const styles = {
   container: {
     fontFamily: 'sans-serif' as 'sans-serif',
-    width: '85%' as string,
+    width: '90%' as string,
     margin: '20px auto' as string,
     //border: '1px solid #ccc' as string,
     padding: '20px' as '20px',
