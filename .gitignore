@@ -27,3 +27,5 @@ yarn-error.log*
 
 # JSON Server
 src/data/*
+
+src/services/Api.ts
