@@ -22,12 +22,12 @@ const getUserByEmail = async (email: string): Promise<User> => {
 
 const createUser = async (userData: 
   {
+    cim: string;
+    lodge_id: number;
     name: string;
     email: string;
-    cim: string;
     password: string;
     degree: string;
-    lodge: string;
     role: string;
   }) => {
   try {
