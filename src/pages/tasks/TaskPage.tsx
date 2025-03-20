@@ -37,7 +37,7 @@ export default function CreateInstruction() {
       }
     }
     fetchUsers();
-  }, []);
+  });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

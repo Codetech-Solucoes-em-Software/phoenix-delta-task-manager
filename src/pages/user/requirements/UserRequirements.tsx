@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import useDocumentTitle from "../../../hooks/PageTitle";
 import { useEffect, useState } from "react";
@@ -29,7 +28,6 @@ interface UserRequirement {
 export default function UserRequirements({ filter }: LodgeRequirementsProps) {
   useDocumentTitle("Requisitos");
   const { user } = useAuth();
-  const navigate = useNavigate();
   const [userRequirements, setUserRequirements] = useState<UserRequirement[]>([]);
   const [loading, setLoading] = useState(false);
   
