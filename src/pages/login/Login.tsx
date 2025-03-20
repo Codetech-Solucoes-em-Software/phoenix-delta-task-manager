@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { authenticateUser } from "../../services/AuthService";
 import useDocumentTitle from "../../hooks/PageTitle";
 import MainLogo from '../../assets/logo-lojas-2.png';
-import masonLogo from '../../assets/331d4371a7b3d149e94095a89c372632.jpg';
+import masonLogo from '../../assets/logo-phoenix.jpeg';
 import { styles } from "./styles";
 import { IUserAuth } from "../../interfaces/IUserAuth";
 export default function Login() {
