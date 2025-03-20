@@ -23,6 +23,7 @@ interface Requirement {
   requirements: {
     name: string;
     expected_date: string;
+    finished_date: string;
     approved_date: string;
     requirements_type: string;
   }
@@ -103,7 +104,7 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
               <div style={styles.requirementsCol}>{item.requirements.name}</div>
               <div style={styles.requirementsCol}>{item.user.name}</div>
               <div style={styles.dateCol}>{new Date(item.requirements.expected_date).toLocaleDateString()}</div>
-              <div style={styles.dateCol}>{item.requirements.approved_date ? new Date(item.requirements.approved_date).toLocaleDateString() : ""}</div>
+              <div style={styles.dateCol}>{item.requirements.finished_date ? new Date(item.requirements.finished_date).toLocaleDateString() : ""}</div>
               <div style={{ ...styles.statusCol, color: getStatusColor(item.status) }}>
                 {item.status}
               </div>
