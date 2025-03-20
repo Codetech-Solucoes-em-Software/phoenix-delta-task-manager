@@ -20,9 +20,14 @@ export default function Register() {
   const [cim, setCim] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [lodge, setLodge] = useState<"phoenix" | "delta">("phoenix");
+  const [lodge, setLodge] = useState<"PHOENIX" | "DELTA">("PHOENIX");
   const role: string = 'USER';
   const [error, setError] = useState("");
+
+  const lodgeMapping: Record<string, number> = {
+    PHOENIX: 1,
+    DELTA: 2
+  };
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault(); // Evita recarregar a página
@@ -32,9 +37,25 @@ export default function Register() {
       return;
     }
 
+    const lodgeUpperCase = lodge.toUpperCase();
+    const lodge_id: number = lodgeMapping[lodgeUpperCase];
+
+    if (!lodge_id) setError('Lodge ID nulo');
+
+    console.log("Lodge selecionado:", lodge); // Verifica se o valor está correto
+    console.log("Lodge ID enviado:", lodge_id); // Confirma se o ID está sendo gerado corretamente
+
     try {
       // Chama a API para registrar o usuário
-      await createUser({ name, email, cim, password, degree, lodge, role });
+      await createUser({ 
+        cim, 
+        lodge_id, 
+        name, 
+        email, 
+        password, 
+        degree, 
+        role 
+      });
 
       const userData = { cim, password };
 
@@ -119,9 +140,9 @@ export default function Register() {
             required
           />
 
-          <select style={styles.input} value={lodge} onChange={(e) => setLodge(e.target.value as "phoenix" | "delta")}>
-            <option value="phoenix">Phoenix</option>
-            <option value="delta">Delta</option>
+          <select style={styles.input} value={lodge} onChange={(e) => setLodge(e.target.value as "PHOENIX" | "DELTA")}>
+            <option value="PHOENIX">Phoenix</option>
+            <option value="DELTA">Delta</option>
           </select>
 
           <button type="submit" style={styles.button}>Registrar</button>
