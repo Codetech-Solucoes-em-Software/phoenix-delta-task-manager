@@ -6,6 +6,7 @@ import Register from "./pages/register/Register";
 import AdminView from "./views/admin/AdminView";
 import UserView from "./views/user/UserView";
 import React from "react";
+import ProfileView from "./views/user/ProfileView";
 
 const PrivateRoute = ({ children, role }: { children: JSX.Element; role: 'ADMIN' | 'USER' }) => {
   const { user }: any = useAuth();
@@ -38,6 +39,7 @@ function App() {
       <Route path="/admin" element={<PrivateRoute role="ADMIN"><AdminView /></PrivateRoute>} />
       {/* Rotas Instructions */}
       <Route path="/home" element={<PrivateRoute role="USER"><UserView /></PrivateRoute>} />
+      <Route path="/profile" element={<ProfileView />}/>
       <Route
         path="*"
         element={<Navigate to={user ? (user.role === 'ADMIN' ? '/admin' : '/home') : '/login'} replace />}
