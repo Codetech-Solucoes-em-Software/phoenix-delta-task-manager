@@ -220,7 +220,8 @@ export const styles = {
   },
   logoutButtonContainer: {
     display: "flex" as "flex",
-    justifyContent: "flex-end" as "flex-end"
+    justifyContent: "space-between" as "space-between",
+    gap: 6
   },
   logoutButton: {
     display: "flex" as "flex",
@@ -230,11 +231,26 @@ export const styles = {
     textAlign: "center" as "center",
     border: "none" as "none",
     borderRadius: "50%" as string,
-    backgroundColor: "#e11b0e" as string
+    backgroundColor: "#e11b0e" as string,
+  },
+  profileButton: {
+    display: "flex" as "flex",
+    alignItems: "center" as "center",
+    width: 40,
+    height: 40,
+    textAlign: "center" as "center",
+    border: "none" as "none",
+    borderRadius: "50%" as string,
   },
   iconButton: {
     width: 35,
     height: 35,
     cursor: "pointer" as "pointer"
+  },
+  iconButtonProfile: {
+    width: 25,
+    height: 25,
+    cursor: "pointer" as "pointer",
+    marginLeft: 3
   }
 };
