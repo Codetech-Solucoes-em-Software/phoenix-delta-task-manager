@@ -79,6 +79,34 @@ const updateRequirementStatus = async (userRequirementId: number) => {
   }
 };
 
+const changePassword = async (userId: number, currentPassword: string, newPassword: string) => {
+  try {
+    const storedData = localStorage.getItem("user");
+    console.log(storedData);
+    const parsedData = storedData ? JSON.parse(storedData) : null;
+    console.log(parsedData);
+    const token = parsedData?.token;
+    console.log(token);
+    if (!token) { 
+      console.error("Erro: não foi possível pegar o token"); 
+      return;
+    } 
+    const response = await api.put(`/change-password/${userId}`, {
+      currentPassword,
+      newPassword,
+    }, {
+      headers: {
+        authorization: token,
+        "Content-Type": "application/json"
+      }
+    });
+    console.log('Retorno da API: ' + response);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "Erro ao alterar senha";
+  }
+};
+
 
 export {
   getAllUsers,
@@ -88,5 +116,6 @@ export {
   // deleteUser,
   getLoggedInUser,
   userExists,
-  updateRequirementStatus
+  updateRequirementStatus,
+  changePassword
 };
