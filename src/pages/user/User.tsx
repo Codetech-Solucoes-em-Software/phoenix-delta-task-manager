@@ -5,8 +5,7 @@ import useDocumentTitle from "../../hooks/PageTitle";
 import UserRequirements from "../user/requirements/UserRequirements";
 import { styles } from "./styles";
 import { CgLogOff } from "react-icons/cg";
-import React from "react";
-
+import { FaUser } from "react-icons/fa6";
 export default function User() {
   useDocumentTitle("Requisitos");
   const { user, logout } = useAuth();
@@ -16,6 +15,7 @@ export default function User() {
   return (
     <div style={styles.container}>
       <div style={styles.logoutButtonContainer}>
+        <button style={styles.logoutButton}>{<FaUser style={styles.iconButton}/>}</button>
         <button onClick={logout} style={styles.logoutButton}>{<CgLogOff style={styles.iconButton} />}</button>
       </div>
       <div style={styles.header}>

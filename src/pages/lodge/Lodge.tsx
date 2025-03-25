@@ -4,11 +4,12 @@ import useDocumentTitle from "../../hooks/PageTitle";
 import LodgeRequirements from "./requirements/RequirementsLodge";
 import { styles } from "./styles";
 import { CgLogOff } from "react-icons/cg";
-
-//const LogOffIcon = CgLogOff as unknown as () => JSX.Element;
+import { FaUser } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 
 export default function Lodge() {
   useDocumentTitle("Menu da Loja");
+  const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [filter, setFilter] = useState<"user" | "expected_date">("user");
   console.log(filter);
@@ -16,6 +17,7 @@ export default function Lodge() {
   return (
     <div style={styles.container}>
       <div style={styles.logoutButtonContainer}>
+        <button style={styles.profileButton} onClick={() => navigate('/profile')}>{<FaUser style={styles.iconButtonProfile}/>}</button>
         <button onClick={logout} style={styles.logoutButton}><CgLogOff style={styles.iconButton} /></button>
       </div>
       <div style={styles.header}>
