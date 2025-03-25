@@ -6,8 +6,10 @@ import UserRequirements from "../user/requirements/UserRequirements";
 import { styles } from "./styles";
 import { CgLogOff } from "react-icons/cg";
 import { FaUser } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
 export default function User() {
   useDocumentTitle("Requisitos");
+  const navigate = useNavigate();
   const { user, logout } = useAuth();
   const [filter, setFilter] = useState<"expected_date">("expected_date");
   console.log(filter);
@@ -15,7 +17,7 @@ export default function User() {
   return (
     <div style={styles.container}>
       <div style={styles.logoutButtonContainer}>
-        <button style={styles.logoutButton}>{<FaUser style={styles.iconButton}/>}</button>
+        <button onClick={() => navigate('/profile')} style={styles.profileButton}>{<FaUser style={styles.iconButtonProfile}/>}</button>
         <button onClick={logout} style={styles.logoutButton}>{<CgLogOff style={styles.iconButton} />}</button>
       </div>
       <div style={styles.header}>
