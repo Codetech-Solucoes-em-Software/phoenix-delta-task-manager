@@ -17,7 +17,7 @@ export default function Lodge() {
   return (
     <div style={styles.container}>
       <div style={styles.logoutButtonContainer}>
-        <button style={styles.logoutButton} onClick={() => navigate('/profile')}>{<FaUser style={styles.iconButton}/>}</button>
+        <button style={styles.profileButton} onClick={() => navigate('/profile')}>{<FaUser style={styles.iconButtonProfile}/>}</button>
         <button onClick={logout} style={styles.logoutButton}><CgLogOff style={styles.iconButton} /></button>
       </div>
       <div style={styles.header}>
