@@ -4,7 +4,6 @@ import { createUser } from "../../services/UserService";
 import { authenticateUser } from "../../services/AuthService";
 import { useAuth } from "../../context/AuthContext";
 import useDocumentTitle from "../../hooks/PageTitle";
-import masonLogo from '../../assets/331d4371a7b3d149e94095a89c372632.jpg';
 import MainLogo from '../../assets/logo-phoenix.jpeg';
 import { styles } from "./styles";
 import { IUserAuth } from "../../interfaces/IUserAuth";
