@@ -41,11 +41,14 @@ export default function UserRequirements({ filter }: LodgeRequirementsProps) {
       setLoading(true);
       try {
         const data: any = await getUserRequirements(user.id);
-        const formattedData: any = Array.isArray(data) ? data : [data];
+        const formattedData = Array.isArray(data) ? data : [data];
 
-        // Se o usuário for "USER", filtramos apenas os requisitos que pertencem a ele
+      // Filtra os requisitos com base no grau do usuário
+      const filteredData = formattedData.filter((item: UserRequirement) => {
+        return item.requirements_type === user.degree;
+      });
 
-        setUserRequirements(formattedData);
+      setUserRequirements(filteredData);
       } catch (error) {
         console.error("Erro ao buscar requisitos:", error);
       } finally {
