@@ -4,7 +4,8 @@ export const styles = {
   },
   logo: {
     width: '100%',
-    height: '100vh'
+    height: '100vh',
+    padding: '100px'
   },
   logoHeaderLogin: {
     width: 100,

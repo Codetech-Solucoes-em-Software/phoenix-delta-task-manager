@@ -5,7 +5,7 @@ import { authenticateUser } from "../../services/AuthService";
 import { useAuth } from "../../context/AuthContext";
 import useDocumentTitle from "../../hooks/PageTitle";
 import masonLogo from '../../assets/331d4371a7b3d149e94095a89c372632.jpg';
-import MainLogo from '../../assets/logo-lojas-2.png';
+import MainLogo from '../../assets/logo-phoenix.jpeg';
 import { styles } from "./styles";
 import { IUserAuth } from "../../interfaces/IUserAuth";
 
@@ -91,7 +91,7 @@ export default function Register() {
     <div style={styles.container}>
       <div className="col-sm-5 d-flex justify-content-center">
         <form style={styles.registerForm} onSubmit={handleRegister}>
-          <img style={styles.logoHeaderLogin} src={masonLogo} alt="Logo Maçonaria" />
+          <img style={styles.logoHeaderLogin} src={MainLogo} alt="Logo Maçonaria" />
           <h2>Registrar</h2>
 
           {error && <p style={{ color: "red" }}>{error}</p>}
@@ -154,7 +154,7 @@ export default function Register() {
       </div>
 
       <div className="col-sm-7">
-        <img src={MainLogo} alt="Logo Principal" style={styles.logo} />
+        <img src={MainLogo} alt="Logo Principal" style={{...styles.logo, width: '90%'}} />
       </div>
     </div>
   );
