@@ -65,7 +65,7 @@ export default function UserRequirements({ filter }: LodgeRequirementsProps) {
         return "red";
       case "ENTREGUE":
         return "orange";
-      case "CONCLUÍDO":
+      case "APROVADO":
         return "green";
       default:
         return "black";
