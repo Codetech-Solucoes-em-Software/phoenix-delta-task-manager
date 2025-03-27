@@ -1,9 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useAuth } from "../../../context/AuthContext";
 import useDocumentTitle from "../../../hooks/PageTitle";
 import { useEffect, useState } from "react";
 import { styles } from "./styles";
 import { getRequirements } from "../../../services/LodgeService";
 import DownloadModal from "../../../components/modalDownload/DownloadModal";
+import ConfirmModal from "../../../components/approveModal/ApproveModal";
+import { approveRequirement } from "../../../services/InstructionsService";
+import ApprovalModal from "../../../components/approveModal/ApproveModal";
 
 interface LodgeRequirementsProps {
   filter: "user" | "expected_date";
@@ -20,6 +25,7 @@ interface Requirement {
     name: string;
   };
   requirements: {
+    id: number;
     name: string;
     expected_date: string;
     finished_date: string;
@@ -37,6 +43,18 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
   const [isDownloadModalOpen, setIsDownloadModalOpen] = useState(false);
   const [selectedDownloadRequirementId, setSelectedDownloadRequirementId] = useState<number | null>(null);
   const [selectedVoucherId, setSelectedVoucherId] = useState<number | null>(null);
+  const [isApprovalModalOpen, setIsApprovalModalOpen] = useState(false);
+  const [selectedRequirement, setSelectedRequirement] = useState<{ id: number; userId: number } | null>(null);
+
+  const openApprovalModal = (requirementId: number, userId: number) => {
+    setSelectedRequirement({ id: requirementId, userId });
+    setIsApprovalModalOpen(true);
+  };
+
+  const closeApprovalModal = () => {
+    setIsApprovalModalOpen(false);
+    setSelectedRequirement(null);
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -44,29 +62,35 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
         return "red";
       case "ENTREGUE":
         return "orange";
-      case "CONCLUÍDO":
+      case "APROVADO":
         return "green";
       default:
         return "black";
     }
   }
+  
+  if (!user || !user.lodge_id) return null;
+
+  const fetchRequirements = async () => {
+    setLoading(true);
+    try {
+      const data: any = await getRequirements(user.lodge_id, filter);
+      const formattedData = Array.isArray(data) ? data : [data];
+
+      // Filtra os requisitos com base no grau do usuário
+      const filteredData = formattedData.filter((item: Requirement) => {
+        return item.requirements.requirements_type === user.degree;
+      });
+
+      setRequirements(filteredData);
+    } catch (error) {
+      console.error("Erro ao buscar requisitos:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (!user || !user.lodge_id) return;
-
-    const fetchRequirements = async () => {
-      setLoading(true);
-      try {
-        const data: any = await getRequirements(user.lodge_id, filter);
-        const formattedData = Array.isArray(data) ? data : [data];
-        setRequirements(formattedData);
-      } catch (error) {
-        console.error("Erro ao buscar requisitos:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchRequirements();
   }, [user, filter]);
 
@@ -99,14 +123,14 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
     return (
       <div style={styles.container}>
         {sortedUsers.map(({ user, requirements }) => (
-          <div key={user.id} style={{ 
-            marginBottom: 15, 
-            border: "1px solid #ccc", 
-            borderRadius: 8, 
-            padding: 10, 
-            backgroundColor: "#f9f9f9" 
+          <div key={user.id} style={{
+            marginBottom: 15,
+            border: "1px solid #ccc",
+            borderRadius: 8,
+            padding: 10,
+            backgroundColor: "#f9f9f9"
           }}>
-            <h3 
+            <h3
               style={{ marginBottom: 15, border: "1px solid #ccc", borderRadius: 8, padding: 10, backgroundColor: "#f9f9f9" }}
               onClick={() => toggleUserExpand(user.id)}
             >
@@ -122,19 +146,22 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
                   <div style={styles.statusCol}>Situação</div>
                   <div style={styles.requirementsCol}>Comprovante</div>
                   <div style={styles.requirementsCol}>Grau</div>
+                  <div style={styles.requirementsCol}>Aprovar</div>
                 </div>
                 {requirements.map((item) => (
                   <div key={item.id} style={styles.requirementsRow}>
                     <div style={styles.requirementsCol}>{item.requirements.name}</div>
                     <div style={styles.requirementsCol}>{item.user.name}</div>
                     <div style={styles.dateCol}>{new Date(item.requirements.expected_date).toLocaleDateString()}</div>
-                    <div style={styles.dateCol}>{new Date(item.requirements.approved_date).toLocaleDateString()}</div>
-                    <div style={{...styles.statusCol, color: item.status === 'ENTREGUE' ? 'green' : 'red'}}>{item.status}</div>
+                    <div style={styles.dateCol}>{item.requirements.approved_date ? new Date(item.requirements.approved_date).toLocaleDateString() : ""}</div>
+                    <div style={{...styles.statusCol, color: getStatusColor(item.status) }}>{item.status}</div>
                     <div style={styles.requirementsCol}>
                       {item.status === "ENTREGUE" && item.voucher_id ? (
                         <button
                           style={{
                             ...styles.downloadButton,
+                            opacity: 1,
+                            cursor: "pointer",
                             backgroundColor: "#007bff",
                             color: "white",
                             textAlign: 'center'
@@ -152,8 +179,44 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
                       )}
                     </div>
                     <div style={styles.requirementsCol}>{item.requirements.requirements_type}</div>
+                    <div style={styles.requirementsCol}>
+                      {item.status === "ENTREGUE" ? (
+                        <button
+                          style={{
+                            ...styles.downloadButton,
+                            backgroundColor: "#28a745",
+                            color: "white",
+                            textAlign: "center",
+                          }}
+                          onClick={() => openApprovalModal(item.id, item.user.id)}
+                        >
+                          Aprovar
+                        </button>
+                      ) : (
+                        <span style={{ color: "#888" }}>Não disponível</span>
+                      )}
+                    </div>
                   </div>
                 ))}
+                {/* Aqui é onde o modal será renderizado */}
+                {isDownloadModalOpen &&
+                  selectedVoucherId && selectedDownloadRequirementId && (
+                    <DownloadModal
+                      isOpen={isDownloadModalOpen}
+                      onClose={() => setIsDownloadModalOpen(false)}
+                      voucher_id={selectedVoucherId}
+                    />
+                  )}
+
+                {isApprovalModalOpen && selectedRequirement && (
+                  <ApprovalModal
+                    isOpen={isApprovalModalOpen}
+                    onClose={closeApprovalModal}
+                    onApprove={fetchRequirements}
+                    requirementId={selectedRequirement.id}
+                    userId={selectedRequirement.userId}
+                  />
+                )}
               </div>
             )}
           </div>
@@ -173,44 +236,62 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
           <div style={styles.statusCol}>Situação</div>
           <div style={styles.requirementsCol}>Comprovante</div>
           <div style={styles.requirementsCol}>Grau</div>
+          <div style={styles.requirementsCol}>Aprovar</div>
         </div>
         {requirements.map((item) => (
           <div key={item.id} style={styles.requirementsRow}>
             <div style={styles.requirementsCol}>{item.requirements.name}</div>
             <div style={styles.requirementsCol}>{item.user.name}</div>
-            <div style={{...styles.dateCol, alignSelf: 'end'}}>{new Date(item.requirements.expected_date).toLocaleDateString()}</div>
-            <div style={styles.dateCol}>{new Date(item.requirements.approved_date).toLocaleDateString()}</div>
-            <div style={{...styles.statusCol, color: getStatusColor(item.status)}}>{item.status}</div>
+            <div style={styles.dateCol}>{new Date(item.requirements.expected_date).toLocaleDateString()}</div>
+            <div style={styles.dateCol}>{item.requirements.approved_date ? new Date(item.requirements.approved_date).toLocaleDateString() : ""}</div>
+            <div style={{ ...styles.statusCol, color: getStatusColor(item.status) }}>{item.status}</div>
             {/* Exibe o botão "Download" com estilo condicional */}
-              {/* Botão para Download do Comprovante */}
-              <div style={styles.requirementsCol}>
-                {item.status === "ENTREGUE" && item.voucher_id ? (
-                  <button
-                    style={{
-                      ...styles.downloadButton,
-                      opacity: 1,
-                      cursor: "pointer",
-                      backgroundColor: "#007bff",
-                      color: "white",
-                      textAlign: 'center'
-                    }}
-                    onClick={() => {
-                      setSelectedDownloadRequirementId(item.id);
-                      setSelectedVoucherId(item.voucher_id);
-                      setIsDownloadModalOpen(true);
-                    }}
-                  >
-                    Download
-                  </button>
-                ) : (
-                  <span style={{ color: "#888" }}>Sem comprovante</span>
-                )}
-              </div>
-              <div>{item.requirements.requirements_type}</div>
+            {/* Botão para Download do Comprovante */}
+            <div style={styles.requirementsCol}>
+              {item.status === "ENTREGUE" && item.voucher_id ? (
+                <button
+                  style={{
+                    ...styles.downloadButton,
+                    opacity: 1,
+                    cursor: "pointer",
+                    backgroundColor: "#007bff",
+                    color: "white",
+                    textAlign: 'center'
+                  }}
+                  onClick={() => {
+                    setSelectedDownloadRequirementId(item.id);
+                    setSelectedVoucherId(item.voucher_id);
+                    setIsDownloadModalOpen(true);
+                  }}
+                >
+                  Download
+                </button>
+              ) : (
+                <span style={{ color: "#888" }}>Sem comprovante</span>
+              )}
+            </div>
+            <div>{item.requirements.requirements_type}</div>
+            <div style={styles.requirementsCol}>
+              {item.status === "ENTREGUE" ? (
+                <button
+                  style={{
+                    ...styles.downloadButton,
+                    backgroundColor: "#28a745",
+                    color: "white",
+                    textAlign: "center",
+                  }}
+                  onClick={() => openApprovalModal(item.id, item.user.id)}
+                >
+                  Aprovar
+                </button>
+              ) : (
+                <span style={{ color: "#888" }}>Não disponível</span>
+              )}
+            </div>
           </div>
         ))}
-          {/* Aqui é onde o modal será renderizado */}
-          {isDownloadModalOpen &&
+        {/* Aqui é onde o modal será renderizado */}
+        {isDownloadModalOpen &&
           selectedVoucherId && selectedDownloadRequirementId && (
             <DownloadModal
               isOpen={isDownloadModalOpen}
@@ -218,6 +299,16 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
               voucher_id={selectedVoucherId}
             />
           )}
+
+        {isApprovalModalOpen && selectedRequirement && (
+          <ApprovalModal
+            isOpen={isApprovalModalOpen}
+            onClose={closeApprovalModal}
+            onApprove={fetchRequirements}
+            requirementId={selectedRequirement.id}
+            userId={selectedRequirement.userId}
+          />
+        )}
       </div>
     </div>
   );
