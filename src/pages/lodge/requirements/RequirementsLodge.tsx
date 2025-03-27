@@ -6,8 +6,6 @@ import { useEffect, useState } from "react";
 import { styles } from "./styles";
 import { getRequirements } from "../../../services/LodgeService";
 import DownloadModal from "../../../components/modalDownload/DownloadModal";
-import ConfirmModal from "../../../components/approveModal/ApproveModal";
-import { approveRequirement } from "../../../services/InstructionsService";
 import ApprovalModal from "../../../components/approveModal/ApproveModal";
 
 interface LodgeRequirementsProps {
