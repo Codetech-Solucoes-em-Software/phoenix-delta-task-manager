@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { styles } from "./styles";
 import { getRequirements } from "../../../services/LodgeService";
 import DownloadModal from "../../../components/modalDownload/DownloadModal";
-import ApprovalModal from "../../../components/approveModal/ApproveModal";
+import ApproveModal from "../../../components/approveModal/ApproveModal";
 
 interface LodgeRequirementsProps {
   filter: "user" | "expected_date";
@@ -207,7 +207,7 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
                   )}
 
                 {isApprovalModalOpen && selectedRequirement && (
-                  <ApprovalModal
+                  <ApproveModal
                     isOpen={isApprovalModalOpen}
                     onClose={closeApprovalModal}
                     onApprove={fetchRequirements}
@@ -299,7 +299,7 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
           )}
 
         {isApprovalModalOpen && selectedRequirement && (
-          <ApprovalModal
+          <ApproveModal
             isOpen={isApprovalModalOpen}
             onClose={closeApprovalModal}
             onApprove={fetchRequirements}
