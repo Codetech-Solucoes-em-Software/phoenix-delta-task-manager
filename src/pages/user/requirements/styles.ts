@@ -10,12 +10,14 @@ export const styles = {
   
   requirementsRow: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr',
+    gridTemplateColumns: '2.3fr 1.2fr 0.8fr 0.8fr 0.8fr 1fr 1fr',
+    gap: '15px',
     marginTop: 15
   },
   tableHeader: {
     display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr',
+    gridTemplateColumns: '2.3fr 1.2fr 0.8fr 0.8fr 0.8fr 1fr 1fr',
+    gap: '15px',
     borderBottom: '1px solid #ccc',
     paddingBottom: '5px',
     fontWeight: 'bold',

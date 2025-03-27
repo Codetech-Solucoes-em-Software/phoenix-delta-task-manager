@@ -1,10 +1,10 @@
 export const styles = {
   container: {
     fontFamily: 'sans-serif' as 'sans-serif',
-    width: '90%' as string,
+    width: '100%' as string,
     margin: '20px auto' as string,
     //border: '1px solid #ccc' as string,
-    padding: '20px' as '20px',
+    padding: '3px' as '3px',
     boxSizing: 'border-box' as 'border-box',
   },
   header: {
@@ -220,6 +220,8 @@ export const styles = {
   },
   logoutButtonContainer: {
     display: "flex" as "flex",
+    width: '90%' as const,
+    margin: '0 auto' as const,
     justifyContent: "space-between" as "space-between",
     gap: 6
   },

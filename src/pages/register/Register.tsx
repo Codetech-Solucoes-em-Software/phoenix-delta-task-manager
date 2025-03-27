@@ -153,7 +153,7 @@ export default function Register() {
       </div>
 
       <div className="col-sm-7">
-        <img src={MainLogo} alt="Logo Principal" style={{...styles.logo, width: '90%'}} />
+        <img src={MainLogo} alt="Logo Principal" style={{...styles.logo, width: '85%'}} />
       </div>
     </div>
   );

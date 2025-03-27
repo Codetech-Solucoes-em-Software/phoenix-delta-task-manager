@@ -67,7 +67,7 @@ const getLoggedInUser = () => {};
 
 const updateRequirementStatus = async (userRequirementId: number) => {
   try {
-    const response = await api.put(`/userRequirements/${userRequirementId}`, {
+    const response = await api.put(`/userRequirements/${userRequirementId}/finished_date`, {
       finished_date: new Date().toISOString(),
       status: "ENTREGUE",
     });
