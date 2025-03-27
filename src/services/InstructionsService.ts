@@ -49,8 +49,8 @@ const createInstruction = async (data: CreateInstructionDTO) => {
 
 const updateInstruction = async (id: number, instruction: Instruction) => {
   try {
-     const update = await api.put(`/classicalLessons/${id}`, instruction);
-     return update;
+    const update = await api.put(`/classicalLessons/${id}`, instruction);
+    return update;
   } catch (error: any) {
     throw new Error('Ocorreu um erro ao modificar a instrução', error);
   }
@@ -75,11 +75,25 @@ const getUserRequirements = async (user_id: number) => {
   }
 }
 
+const approveRequirement = async (id: number, userId: number) => {
+  try {
+    const response = await api.put(`/userRequirements/${id}/approved_date/${userId}`, {
+      approved_date: new Date().toISOString(),
+      status: "APROVADO",
+    });
+    console.log(response.data);
+    return response.data
+  } catch (error) {
+    throw new Error('Ocorreu um erro ao aprovar o requisito');
+  }
+};
+
 export {
   getInstructions,
   createInstruction,
   updateInstruction,
   getInstructionById,
   deleteInstruction,
-  getUserRequirements
+  getUserRequirements,
+  approveRequirement
 };

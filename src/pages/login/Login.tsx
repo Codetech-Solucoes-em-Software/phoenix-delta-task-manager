@@ -79,7 +79,7 @@ export default function Login() {
       <div className={`
         col-sm-7 d-flex
       `}>
-        <img src={masonLogo} alt="Logo Principal" style={{...styles.logo, width: '90%'}} />
+        <img src={masonLogo} alt="Logo Principal" style={{...styles.logo, width: '85%'}} />
       </div>
     </div>
   );
