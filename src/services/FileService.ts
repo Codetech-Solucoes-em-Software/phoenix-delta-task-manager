@@ -1,12 +1,17 @@
 import api from "./Api";
 
-const uploadFile = async (formData: FormData, userRequirementId: number, userId: number) => {
+const uploadFile = async (formData: FormData, userRequirementId: number) => {
   try {
+    const storedUser = localStorage.getItem('user');
+    if (!storedUser) throw new Error("Usuário não encontrado no localStorage.");
+
+    const user = JSON.parse(storedUser);
+    const token = user.token;
+
+    if (!token) throw new Error("Token não fornecido.");
     const response = await api.post(`/vouchers/upload/${userRequirementId}`, formData, {
-      params: {
-        user_id: userId
-      },
       headers: {
+        'Authorization': `Bearer ${token}`,
         "Content-Type": "multipart/form-data",
       },
     });
