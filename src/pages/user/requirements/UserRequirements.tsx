@@ -10,7 +10,7 @@ interface LodgeRequirementsProps {
 }
 
 interface UserRequirement {
-  id: number;
+  user_requirement_id: number;
   user_id: number;
   requirement_id: number;
   lodge_id: number;
@@ -90,7 +90,7 @@ export default function UserRequirements({ filter }: LodgeRequirementsProps) {
             <div style={styles.requirementsCol}>Grau</div>
           </div>
           {userRequirements.map((item) => (
-            <div key={`${item.id}-${item.lodge_id}`} style={styles.requirementsRow}>
+            <div key={`${item.user_requirement_id}-${item.lodge_id}`} style={styles.requirementsRow}>
               <div style={styles.requirementsCol}>{item.name}</div>
               <div style={styles.requirementsCol}>{item.user_name}</div>
               <div style={styles.dateCol}>
@@ -116,7 +116,7 @@ export default function UserRequirements({ filter }: LodgeRequirementsProps) {
                   disabled={!(item.status === "PENDENTE" && item.is_voucher)} 
                   onClick={() => {
                     if (item.status === "PENDENTE" && item.is_voucher) {
-                      setSelectedRequirementId(item.id);
+                      setSelectedRequirementId(item.user_requirement_id);
                       setIsModalOpen(true);
                     }
                   }}
