@@ -21,6 +21,7 @@ interface Requirement {
   user: {
     id: number;
     name: string;
+    degree: string;
   };
   requirements: {
     id: number;
@@ -66,7 +67,7 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
         return "black";
     }
   }
-  
+
   if (!user || !user.lodge_id) return null;
 
   const fetchRequirements = async () => {
@@ -75,12 +76,7 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
       const data: any = await getRequirements(user.lodge_id, filter);
       const formattedData = Array.isArray(data) ? data : [data];
 
-      // Filtra os requisitos com base no grau do usuário
-      const filteredData = formattedData.filter((item: Requirement) => {
-        return item.requirements.requirements_type === user.degree;
-      });
-
-      setRequirements(filteredData);
+      setRequirements(formattedData);
     } catch (error) {
       console.error("Erro ao buscar requisitos:", error);
     } finally {
@@ -109,6 +105,10 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
   if (filter === "user") {
     const groupedRequirements = requirements.reduce((acc, req) => {
       const userId = req.user.id;
+
+      if (req.user.degree !== req.requirements.requirements_type) {
+        return acc;
+      }
       if (!acc[userId]) {
         acc[userId] = { user: req.user, requirements: [] };
       }
@@ -151,8 +151,8 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
                     <div style={styles.requirementsCol}>{item.requirements.name}</div>
                     <div style={styles.requirementsCol}>{item.user.name}</div>
                     <div style={styles.dateCol}>{new Date(item.requirements.expected_date).toLocaleDateString()}</div>
-                    <div style={styles.dateCol}>{item.requirements.approved_date ? new Date(item.requirements.approved_date).toLocaleDateString() : ""}</div>
-                    <div style={{...styles.statusCol, color: getStatusColor(item.status) }}>{item.status}</div>
+                    <div style={styles.dateCol}>{item.requirements.approved_date}</div>
+                    <div style={{ ...styles.statusCol, color: getStatusColor(item.status) }}>{item.status}</div>
                     <div style={styles.requirementsCol}>
                       {item.status === "ENTREGUE" && item.voucher_id ? (
                         <button
