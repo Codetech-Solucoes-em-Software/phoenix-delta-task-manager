@@ -15,7 +15,7 @@ export default function Register() {
 
   // Estados para os campos do formulário
   const [name, setName] = useState("");
-  const [degree, setDegree] = useState("");
+  const [degree, setDegree] = useState<"APRENDIZ" | "COMPANHEIRO" | "MESTRE">("APRENDIZ");
   const [cim, setCim] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -104,14 +104,21 @@ export default function Register() {
             required
           />
 
-          <input
+          {/*<input
             type="text"
             placeholder="Digite o grau"
             value={degree}
             onChange={(e) => setDegree(e.target.value)}
             style={styles.input}
             required
-          />
+          /> */}
+          <select 
+            style={styles.input} 
+            onChange={(e) => setDegree(e.target.value as "APRENDIZ" | "COMPANHEIRO" | "MESTRE")}>
+            <option value="APRENDIZ">APRENDIZ</option>
+            <option value="COMPANHEIRO">COMPANHEIRO</option>
+            <option value="MESTRE">MESTRE</option>
+          </select>
 
           <input
             type="email"
