@@ -7,6 +7,7 @@ import AdminView from "./views/admin/AdminView";
 import UserView from "./views/user/UserView";
 import React from "react";
 import ProfileView from "./views/user/ProfileView";
+import ResetUsersPasswordView from "./views/admin/resetPassword/ResetUsersPassword";
 
 const PrivateRoute = ({ children, role }: { children: JSX.Element; role: 'ADMIN' | 'USER' }) => {
   const { user }: any = useAuth();
@@ -40,6 +41,7 @@ function App() {
       {/* Rotas Instructions */}
       <Route path="/home" element={<PrivateRoute role="USER"><UserView /></PrivateRoute>} />
       <Route path="/profile" element={<ProfileView />}/>
+      <Route path="/resetUsersPassword" element={<ResetUsersPasswordView />} />
       <Route
         path="*"
         element={<Navigate to={user ? (user.role === 'ADMIN' ? '/admin' : '/home') : '/login'} replace />}
