@@ -151,7 +151,7 @@ export default function LodgeRequirements({ filter }: LodgeRequirementsProps) {
                     <div style={styles.requirementsCol}>{item.requirements.name}</div>
                     <div style={styles.requirementsCol}>{item.user.name}</div>
                     <div style={styles.dateCol}>{new Date(item.requirements.expected_date).toLocaleDateString()}</div>
-                    <div style={styles.dateCol}>{item.requirements.approved_date}</div>
+                    <div style={styles.dateCol}>{item.requirements.finished_date ? new Date(item.requirements.finished_date).toLocaleDateString() : ""}</div>
                     <div style={{ ...styles.statusCol, color: getStatusColor(item.status) }}>{item.status}</div>
                     <div style={styles.requirementsCol}>
                       {item.status === "ENTREGUE" && item.voucher_id ? (
