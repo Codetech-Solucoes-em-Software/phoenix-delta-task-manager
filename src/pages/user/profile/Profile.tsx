@@ -42,6 +42,9 @@ export default function Profile() {
             <div>
               <button type="button" onClick={() => setIsModalOpen(true)} style={styles.form.buttonContainer.button}>Alterar Senha</button>
             </div>
+            {user.role === "ADMIN" && (
+              <button type="button" onClick={() => navigate('/resetUsersPassword')} style={styles.form.buttonContainer.button}>Senha Usuários</button>
+            )}
           </div>
         </form>
         {/* Modal de Alteração de Senha */}

@@ -107,6 +107,18 @@ const changePassword = async (userId: number, currentPassword: string, newPasswo
   }
 };
 
+const changeUserPassword = async (userId: number, newPassword: string) => {
+  try {
+    const response = await api.put(`/change-password/user/${userId}`, {
+      newPassword,
+    });
+    console.log('Retorno da API: ' + response);
+    return response.data;
+  } catch (error: any) {
+    throw error.response?.data || "Erro ao alterar senha";
+  }
+};
+
 
 export {
   getAllUsers,
@@ -117,5 +129,6 @@ export {
   getLoggedInUser,
   userExists,
   updateRequirementStatus,
-  changePassword
+  changePassword,
+  changeUserPassword
 };
